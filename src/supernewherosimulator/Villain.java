@@ -10,6 +10,10 @@ package supernewherosimulator;
  * @author Lisek
  */
 public class Villain extends Hero {
+
+    public Villain(int id, int locationX, int locationY, int speed) {
+        super(id, locationX, locationY, speed);
+    }
     
     /**
      *

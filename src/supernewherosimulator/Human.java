@@ -11,13 +11,17 @@ import javafx.scene.shape.Rectangle;
  *
  * @author Lisek
  */
-public abstract class Human {
+public abstract class Human implements Runnable {
     
     private String name;
     private int id;
     private int locationX;
     private int locationY;
-    
+     
+    public void run() {
+       System.out.println("Wątek!");
+    }
+   
     /**
      * @return the name
      */
