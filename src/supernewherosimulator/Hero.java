@@ -25,6 +25,11 @@ public class Hero extends Human {
         this.setLocationY(locationY);
         this.speed = speed;
     }
+    
+    public void run() {
+        super.run();
+    }
+    
     /**
      * @fight with other hero
      */

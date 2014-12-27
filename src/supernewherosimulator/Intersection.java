@@ -8,6 +8,7 @@ package supernewherosimulator;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
+import static supernewherosimulator.SuperNewHeroSimulator.numOfInters;
 
 /**
  *

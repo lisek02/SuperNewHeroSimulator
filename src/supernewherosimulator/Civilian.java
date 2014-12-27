@@ -10,9 +10,14 @@ package supernewherosimulator;
  * @author Lisek
  */
 public class Civilian extends Human {
+
+    public Civilian(String name, int id, int locationX, int locationY, Intersection familyTown) {
+        super(name, id, locationX, locationY, familyTown);
+    }
     
-    private String name;
-    private int familyTown;
+    public void run() {
+        super.run();
+    }
     
     /**
      *
@@ -44,32 +49,5 @@ public class Civilian extends Human {
     
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the familyTown
-     */
-    public int getFamilyTown() {
-        return familyTown;
-    }
-
-    /**
-     * @param familyTown the familyTown to set
-     */
-    public void setFamilyTown(int familyTown) {
-        this.familyTown = familyTown;
-    }
     
 }

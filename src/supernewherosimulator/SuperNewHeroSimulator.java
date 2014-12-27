@@ -7,7 +7,9 @@ package supernewherosimulator;
 
 import static java.lang.Math.sqrt;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,9 +42,12 @@ public class SuperNewHeroSimulator extends Application {
     private AnimationTimer timer;
     private Integer frame = 0;
 
-    int numOfInters = 19, numOfTowns = 11, numofIntersections = numOfInters - numOfTowns;
+    public static int numOfInters = 19, numOfTowns = 11, numofIntersections = numOfInters - numOfTowns;
     int i;
-    Intersection[] inter = new Intersection[numOfInters];
+    public static Intersection[] inter = new Intersection[numOfInters];
+    
+    public static Group characters;
+    public static Group paths;
     
     @Override
     public void start(Stage primaryStage) {
@@ -77,44 +82,49 @@ public class SuperNewHeroSimulator extends Application {
         //towns.setOpacity(0.5);
         
         //creating a character
-        Hero stillNoob = new Hero(23, 10, 10, 2);
+        for(i=0; i<10; i++) {
+            
+        }
+        //Hero stillNoob = new Hero(23, 10, 10, 2);
+//        Thread hero = new Thread(stillNoob);
+        //hero.start();
         
         //for(i=0; i<numOfInters; i++) inter[i].printIntersection();
         
         
         //drawing a character
-        Group characters = new Group();
-        Node character = stillNoob.drawHuman();
-        characters.getChildren().add(character);
-        //root.getChildren().add(characters);
+        characters = new Group();
+        //Node character = stillNoob.drawHuman();
+        //characters.getChildren().add(character);
+        root.getChildren().add(characters);
         
         //seting up a path
-        final Group paths = new Group();
+        paths = new Group();
         paths.setAutoSizeChildren(true);
         root.getChildren().add(paths);
         
-        final Path heroPath = new Path();
-        heroPath.getElements().add(new MoveTo(stillNoob.getLocationX(), stillNoob.getLocationY()));
-        for(i=0; i<numOfInters; i++) {
-            heroPath.getElements().add(new LineTo(inter[i].getIntersectionX(), inter[i].getIntersectionY()));
-        }
+//        final Path heroPath = new Path();
+//        heroPath.getElements().add(new MoveTo(stillNoob.getLocationX(), stillNoob.getLocationY()));
+//        for(i=0; i<numOfInters; i++) {
+//            heroPath.getElements().add(new LineTo(inter[i].getIntersectionX(), inter[i].getIntersectionY()));
+//        }
 
         //heroPath.getElements().add(new CubicCurveTo(100,100, 250,300,200,123));
         
-        paths.getChildren().add(heroPath);
-        paths.getChildren().add(character);
-        final PathTransition heroPathTransition = new PathTransition();
+//        paths.getChildren().add(heroPath);
+//        paths.getChildren().add(character);
+//        final PathTransition heroPathTransition = new PathTransition();
         
         
-        heroPathTransition.setDuration(Duration.seconds(15.0));
-        //heroPathTransition.setDelay(Duration.seconds(0.5));
-        heroPathTransition.setPath(heroPath);
-        heroPathTransition.setNode(character);
-        heroPathTransition.setCycleCount(Timeline.INDEFINITE);
-        heroPathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        heroPathTransition.setAutoReverse(true);
-        heroPathTransition.getInterpolator();
-        heroPathTransition.play();
+//        heroPathTransition.setDuration(Duration.seconds(15.0));
+//        //heroPathTransition.setDelay(Duration.seconds(0.5));
+//        heroPathTransition.setPath(heroPath);
+//        heroPathTransition.setNode(character);
+//        heroPathTransition.setCycleCount(Timeline.INDEFINITE);
+//        heroPathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+//        heroPathTransition.setAutoReverse(true);
+//        heroPathTransition.getInterpolator();
+//        heroPathTransition.play();
         
         //animation
         /*
@@ -146,29 +156,33 @@ public class SuperNewHeroSimulator extends Application {
         
         
         //TESTY
-        ArrayList<Intersection> testowa_tablica = new ArrayList<Intersection>();
-        testowa_tablica.add(inter[2]);
-        testowa_tablica.add(inter[5]);
-        testowa_tablica.add(inter[6]);
-        testowa_tablica.add(inter[14]);
-        testowa_tablica.add(inter[17]);
-        System.out.println("testowe skrzyżowanie");
-        find_lowest_f(testowa_tablica, inter[12]).printIntersection();
+//        ArrayList<Intersection> testowa_tablica = new ArrayList<>();
+//        testowa_tablica.add(inter[2]);
+//        testowa_tablica.add(inter[5]);
+//        testowa_tablica.add(inter[6]);
+//        testowa_tablica.add(inter[14]);
+//        testowa_tablica.add(inter[17]);
+//        System.out.println("testowe skrzyżowanie");
+//        find_lowest_f(testowa_tablica, inter[12]).printIntersection();
         
-        System.out.println("szukanie drogi:");
-        ArrayList<Intersection> pathArray = new ArrayList<>();
-        pathArray = findPath(inter[1], inter[11]);
-        for(i=0; i < pathArray.size(); i++) {
-            pathArray.get(i).printIntersection();
+//        System.out.println("szukanie drogi:");
+//        ArrayList<Intersection> pathArray = new ArrayList<>();
+//        pathArray = findPath(inter[1], inter[11]);
+//        for(i=0; i < pathArray.size(); i++) {
+//            pathArray.get(i).printIntersection();
+//        }
+//        
+//        System.out.println("heuristic:");
+//        System.out.println(heuristic_cost_estimate(inter[3], inter[10]));
+        
+        for(i=0; i<10; i++) {
+            Civilian cywil = new Civilian("cywil", i, inter[i].getIntersectionX(), inter[i].getIntersectionY(), inter[i]);       
+            Thread thread = new Thread(cywil);
+            thread.run();
         }
-        
-        System.out.println("heuristic:");
-        System.out.println(heuristic_cost_estimate(inter[3], inter[10]));
-        
-        Civilian cywil = new Civilian();
-        Thread thread = new Thread(cywil);
-        thread.run();
-        
+
+
+               
     }
 
     /**
@@ -208,7 +222,6 @@ public class SuperNewHeroSimulator extends Application {
         inter[17].setIntersection(725, 450);
         inter[18].setIntersection(500, 550);
         
-        
         //neighbours
         inter[0].addNeighbours(inter[11]);
         inter[1].addNeighbours(inter[11], inter[12]);
@@ -228,13 +241,10 @@ public class SuperNewHeroSimulator extends Application {
         inter[15].addNeighbours(inter[6], inter[8], inter[12], inter[16]);
         inter[16].addNeighbours(inter[5], inter[15], inter[17], inter[18]);
         inter[17].addNeighbours(inter[7], inter[9], inter[14], inter[16]);
-        inter[18].addNeighbours(inter[8], inter[9], inter[10], inter[16]);
-                
-        inter[18].printNeighbours();
-        
+        inter[18].addNeighbours(inter[8], inter[9], inter[10], inter[16]);    
     }
     
-    private ArrayList<Intersection> findPath(Intersection start, Intersection end) {
+    public static ArrayList<Intersection> findPath(Intersection start, Intersection end) {
         ArrayList<Intersection> closedset = new ArrayList<>();  //set of noder already evaluated
         ArrayList<Intersection> openset = new ArrayList<>();    // set of tentative nodes to be evaluated
         openset.add(start);     //initially containing start node
@@ -259,7 +269,7 @@ public class SuperNewHeroSimulator extends Application {
                 closedset.add(current);
                 ArrayList<Intersection> interNeighbours = new ArrayList<>();
                 interNeighbours = current.getNeighboursList();
-                for(i=0; i<interNeighbours.size(); i++) {
+                for(int i=0; i<interNeighbours.size(); i++) {
                     Intersection neighbour = interNeighbours.get(i);
                     if(closedset.contains(neighbour)) { continue; }
                     double tentative_g_score = g_score.getOrDefault(current, 0.0) + heuristic_cost_estimate(current, neighbour);    ///heuristic cost estimate(?)
@@ -287,11 +297,11 @@ public class SuperNewHeroSimulator extends Application {
      * @param end final intersection
      * @return 
      */
-    private Intersection find_lowest_f(ArrayList<Intersection> openset, Intersection end) {
+    private static Intersection find_lowest_f(ArrayList<Intersection> openset, Intersection end) {
         double lowest_cost = heuristic_cost_estimate(openset.get(0), end);
         Intersection lowest = openset.get(0);
         
-        for(i=0; i<openset.size(); i++) {
+        for(int i=0; i<openset.size(); i++) {
             double possible_lowest = heuristic_cost_estimate(openset.get(i), end);
             if (possible_lowest  < lowest_cost) {
                 lowest = openset.get(i);
@@ -303,18 +313,24 @@ public class SuperNewHeroSimulator extends Application {
     }
     
     /**
-     * returns heuristic distance between star end end intersection (straight-line distance)
+     * calculate heuristic distance between starting and ending intersection (straight-line distance)
      * @param start
      * @param end
-     * @return 
+     * @return heuristic distance between starting and ending intersection
      */
-    private double heuristic_cost_estimate(Intersection start, Intersection end) {
+    private static double heuristic_cost_estimate(Intersection start, Intersection end) {
         double distance = sqrt(Math.pow((start.getIntersectionX() - end.getIntersectionX()),2.0) + Math.pow((start.getIntersectionY() - end.getIntersectionY()),2.0));    
         return distance;
     }
     
-    
-    private ArrayList<Intersection> reconstructPath(HashMap came_from, Intersection current, Intersection start) {
+    /**
+     * reconstruct path between two towns based on map of navigated intersections
+     * @param came_from array of navigated intersections
+     * @param current final intersection
+     * @param start first intersection
+     * @return path between two towns
+     */
+    private static ArrayList<Intersection> reconstructPath(HashMap came_from, Intersection current, Intersection start) {
         ArrayList<Intersection> total_path = new ArrayList<>();
         
         total_path.add(current);
@@ -323,6 +339,18 @@ public class SuperNewHeroSimulator extends Application {
             total_path.add(current);
         }
         //total_path.add(start);
+        Collections.reverse(total_path);
         return total_path;
+    }
+    
+    /**
+     * Random value
+     * @param min minimum value
+     * @param max maximum value
+     * @return random integer in a range <min;max>
+     */
+    public static int randInt(int min, int max) {
+        Random r = new Random();
+        return r.nextInt(max - min + 1) + min;
     }
 }
