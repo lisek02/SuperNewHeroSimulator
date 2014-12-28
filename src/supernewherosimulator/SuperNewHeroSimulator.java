@@ -175,7 +175,7 @@ public class SuperNewHeroSimulator extends Application {
 //        System.out.println("heuristic:");
 //        System.out.println(heuristic_cost_estimate(inter[3], inter[10]));
         
-        for(i=0; i<10; i++) {
+        for(i=0; i<1; i++) {
             Civilian cywil = new Civilian("cywil", i, inter[i].getIntersectionX(), inter[i].getIntersectionY(), inter[i]);       
             Thread thread = new Thread(cywil);
             thread.run();

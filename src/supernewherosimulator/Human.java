@@ -37,6 +37,68 @@ public abstract class Human implements Runnable {
         this.familyTown = familyTown;
     }
     
+    public void moveBetween(Intersection end) {
+        Node character = this.drawHuman();    
+        Path characterPath = new Path();
+
+        
+        characterPath.getElements().add(new MoveTo(this.getLocationX(), this.getLocationY()));
+        characterPath.getElements().add(new LineTo(end.getIntersectionX(), end.getIntersectionY()));
+        
+        SuperNewHeroSimulator.paths.getChildren().add(character);
+        SuperNewHeroSimulator.paths.getChildren().add(characterPath);
+        
+        //for number of sections
+            //new pathtransition
+        
+        final PathTransition characterTransition = new PathTransition();
+        
+        characterTransition.setDuration(Duration.seconds(2.0));
+        //characterTransition.setDelay(Duration.seconds(0.5));
+        characterTransition.setPath(characterPath);
+        characterTransition.setNode(character);
+        //characterTransition.setCycleCount(1);
+        //characterTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        //characterTransition.setAutoReverse(false);
+        //characterTransition.getInterpolator();
+        characterTransition.play(); 
+    }
+ 
+    public void run() {
+        Intersection homeTown = this.getFamilyTown();
+        Intersection toGo;
+        int toGoId;
+        do {
+            toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
+            toGo = SuperNewHeroSimulator.inter[toGoId];
+        } while (toGo == homeTown);
+        
+
+        
+//        this.locationX = SuperNewHeroSimulator.inter[homeTown].getIntersectionX();
+//        this.locationY = SuperNewHeroSimulator.inter[homeTown].getIntersectionY();
+        ArrayList<Intersection> path = new ArrayList<>();
+        path = SuperNewHeroSimulator.findPath(homeTown, toGo);
+        
+        System.out.println("home town:");
+        homeTown.printIntersection();
+        System.out.println("to go:");
+        toGo.printIntersection();
+        
+
+        
+        for (Intersection path1 : path) {
+            path1.printIntersection();            
+            this.moveBetween(path1);
+            this.setLocationX(path1.getIntersectionX());
+            this.setLocationY(path1.getIntersectionY());
+        }
+//        System.err.println("----");
+//        this.animate(path);
+        System.out.println("Jestę wątkię");
+    }    
+    
+    
     public void animate(ArrayList<Intersection> intersectionPath) {
         Node character = this.drawHuman();    
         Path characterPath = new Path();
@@ -64,30 +126,32 @@ public abstract class Human implements Runnable {
         characterTransition.play();
     }
     
-    public void run() {
-        Intersection homeTown = this.getFamilyTown();
-        Intersection toGo;
-        int toGoId;
-        do {
-            toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
-            toGo = SuperNewHeroSimulator.inter[toGoId];
-        } while (toGo == homeTown);
-        
-//        this.locationX = SuperNewHeroSimulator.inter[homeTown].getIntersectionX();
-//        this.locationY = SuperNewHeroSimulator.inter[homeTown].getIntersectionY();
-        ArrayList<Intersection> path = new ArrayList<>();
-        path = SuperNewHeroSimulator.findPath(homeTown, toGo);
-        System.out.println("home town:");
-        homeTown.printIntersection();
-        System.out.println("to go:");
-        toGo.printIntersection();
-        for (Intersection path1 : path) {
-            path1.printIntersection();
-        }
-        System.err.println("----");
-        this.animate(path);
-        System.out.println("Jestę wątkię");
-    }
+//    public void run() {
+//        Intersection homeTown = this.getFamilyTown();
+//        Intersection toGo;
+//        int toGoId;
+//        do {
+//            toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
+//            toGo = SuperNewHeroSimulator.inter[toGoId];
+//        } while (toGo == homeTown);
+//        
+////        this.locationX = SuperNewHeroSimulator.inter[homeTown].getIntersectionX();
+////        this.locationY = SuperNewHeroSimulator.inter[homeTown].getIntersectionY();
+//        ArrayList<Intersection> path = new ArrayList<>();
+//        path = SuperNewHeroSimulator.findPath(homeTown, toGo);
+//        System.out.println("home town:");
+//        homeTown.printIntersection();
+//        System.out.println("to go:");
+//        toGo.printIntersection();
+//        for (Intersection path1 : path) {
+//            path1.printIntersection();
+//        }
+//        System.err.println("----");
+//        this.animate(path);
+//        System.out.println("Jestę wątkię");
+//    }
+    
+
     
     /**
      * @return the name
