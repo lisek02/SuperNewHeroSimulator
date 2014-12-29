@@ -8,6 +8,7 @@ package supernewherosimulator;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
+import javafx.scene.shape.Rectangle;
 import static supernewherosimulator.SuperNewHeroSimulator.numOfInters;
 
 /**
@@ -18,6 +19,24 @@ public class Intersection extends Place {
     private int x;
     private int y;
     private ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
+    private int bound = 20;
+    
+    
+    /**
+     * set length of intersecttion's side
+     * @param bound 
+     */
+    public void setBound(int bound) {
+        this.bound = bound;
+    }
+    
+    /**
+     * @return length of intersection's side
+     */
+    public int getBound() {
+        return this.bound;
+    }
+    
     
     /**
      * set coordinates for intersection
@@ -55,11 +74,12 @@ public class Intersection extends Place {
      * @param numOfTowns number of towns
      * @return town
      */
-    public Circle drawIntersection(int i, int numOfTowns) {
+    public Rectangle drawIntersection(int i, int numOfTowns) {
         String color;
         if(i<numOfTowns) color = "Black";
         else color = "Red";
-        Circle town = new Circle(this.getIntersectionX(), this.getIntersectionY(), 10, Color.web(color));
+        Rectangle town = new Rectangle(this.getIntersectionX(), this.getIntersectionY(), this.bound, this.bound);
+        town.setFill(Color.web(color));
         return town;              
     }
     

@@ -41,26 +41,46 @@ public abstract class Human implements Runnable {
         Node character = this.drawHuman();    
         Path characterPath = new Path();
 
+        int x,y,xe,ye;
+        int bound = end.getBound()/2;
         
-        characterPath.getElements().add(new MoveTo(this.getLocationX(), this.getLocationY()));
-        characterPath.getElements().add(new LineTo(end.getIntersectionX(), end.getIntersectionY()));
+        if(this.getLocationX() == end.getIntersectionX()) {
+            if((this.getLocationY() - end.getIntersectionY()) > 0) {        //up
+                x = this.locationX + 2*bound;
+                y = this.locationY;
+                xe = x;
+                ye = end.getIntersectionY() + 2*bound;
+            } else {                                                        //down
+                x = this.locationX;
+                y = this.locationY + 2*bound;
+                xe = x;
+                ye = end.getIntersectionY();
+            }
+        } else {
+            if((this.getLocationX() - end.getIntersectionX() > 0)) {        //left
+                x = this.locationX;
+                y = this.locationY;
+                xe = end.getIntersectionX() + 2*bound;
+                ye = y;
+            } else {                                                        //right
+                x = this.locationX + 2*bound;
+                y = this.locationY + 2*bound;
+                xe = end.getIntersectionX();
+                ye = y;
+            }
+        }
+                  
+        characterPath.getElements().add(new MoveTo(x, y));
+        characterPath.getElements().add(new LineTo(xe, ye));
         
         SuperNewHeroSimulator.paths.getChildren().add(character);
         SuperNewHeroSimulator.paths.getChildren().add(characterPath);
         
-        //for number of sections
-            //new pathtransition
-        
         final PathTransition characterTransition = new PathTransition();
         
         characterTransition.setDuration(Duration.seconds(2.0));
-        //characterTransition.setDelay(Duration.seconds(0.5));
         characterTransition.setPath(characterPath);
         characterTransition.setNode(character);
-        //characterTransition.setCycleCount(1);
-        //characterTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        //characterTransition.setAutoReverse(false);
-        //characterTransition.getInterpolator();
         characterTransition.play(); 
     }
  
@@ -73,10 +93,6 @@ public abstract class Human implements Runnable {
             toGo = SuperNewHeroSimulator.inter[toGoId];
         } while (toGo == homeTown);
         
-
-        
-//        this.locationX = SuperNewHeroSimulator.inter[homeTown].getIntersectionX();
-//        this.locationY = SuperNewHeroSimulator.inter[homeTown].getIntersectionY();
         ArrayList<Intersection> path = new ArrayList<>();
         path = SuperNewHeroSimulator.findPath(homeTown, toGo);
         
@@ -99,32 +115,32 @@ public abstract class Human implements Runnable {
     }    
     
     
-    public void animate(ArrayList<Intersection> intersectionPath) {
-        Node character = this.drawHuman();    
-        Path characterPath = new Path();
-        
-        characterPath.getElements().add(new MoveTo(this.getLocationX(), this.getLocationY()));
-        
-        for(int i=0; i<intersectionPath.size(); i++) {
-            Intersection currentInter = intersectionPath.get(i);
-            characterPath.getElements().add(new LineTo(currentInter.getIntersectionX(), currentInter.getIntersectionY()));
-        }
-
-        SuperNewHeroSimulator.paths.getChildren().add(character);
-        SuperNewHeroSimulator.paths.getChildren().add(characterPath);
-        
-        final PathTransition characterTransition = new PathTransition();
-        
-        characterTransition.setDuration(Duration.seconds(5.0));
-        //characterTransition.setDelay(Duration.seconds(0.5));
-        characterTransition.setPath(characterPath);
-        characterTransition.setNode(character);
-        characterTransition.setCycleCount(1);
-        characterTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        characterTransition.setAutoReverse(false);
-        characterTransition.getInterpolator();
-        characterTransition.play();
-    }
+//    public void animate(ArrayList<Intersection> intersectionPath) {
+//        Node character = this.drawHuman();    
+//        Path characterPath = new Path();
+//        
+//        characterPath.getElements().add(new MoveTo(this.getLocationX(), this.getLocationY()));
+//        
+//        for(int i=0; i<intersectionPath.size(); i++) {
+//            Intersection currentInter = intersectionPath.get(i);
+//            characterPath.getElements().add(new LineTo(currentInter.getIntersectionX(), currentInter.getIntersectionY()));
+//        }
+//
+//        SuperNewHeroSimulator.paths.getChildren().add(character);
+//        SuperNewHeroSimulator.paths.getChildren().add(characterPath);
+//        
+//        final PathTransition characterTransition = new PathTransition();
+//        
+//        characterTransition.setDuration(Duration.seconds(5.0));
+//        //characterTransition.setDelay(Duration.seconds(0.5));
+//        characterTransition.setPath(characterPath);
+//        characterTransition.setNode(character);
+//        characterTransition.setCycleCount(1);
+//        characterTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+//        characterTransition.setAutoReverse(false);
+//        characterTransition.getInterpolator();
+//        characterTransition.play();
+//    }
     
 //    public void run() {
 //        Intersection homeTown = this.getFamilyTown();

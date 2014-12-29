@@ -24,6 +24,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
@@ -52,7 +53,8 @@ public class SuperNewHeroSimulator extends Application {
     @Override
     public void start(Stage primaryStage) {
       
-        StackPane root = new StackPane();
+        //StackPane root = new StackPane();
+        Group root = new Group();
         root.setId("root");
        
         Scene scene = new Scene(root, 1200, 800);
@@ -75,7 +77,7 @@ public class SuperNewHeroSimulator extends Application {
         //drawing towns and intersections
         Group towns = new Group();
         for(i=0; i<numOfInters; i++) {
-            towns.getChildren().add(inter[i].drawIntersection(i, numOfTowns)); 
+            towns.getChildren().add(inter[i].drawIntersection(i, numOfTowns));
         }
         root.getChildren().add(towns);
         //towns.setId("towns");
@@ -175,7 +177,7 @@ public class SuperNewHeroSimulator extends Application {
 //        System.out.println("heuristic:");
 //        System.out.println(heuristic_cost_estimate(inter[3], inter[10]));
         
-        for(i=0; i<1; i++) {
+        for(i=0; i<10; i++) {
             Civilian cywil = new Civilian("cywil", i, inter[i].getIntersectionX(), inter[i].getIntersectionY(), inter[i]);       
             Thread thread = new Thread(cywil);
             thread.run();
