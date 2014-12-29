@@ -46,6 +46,7 @@ public class SuperNewHeroSimulator extends Application {
     public static int numOfInters = 19, numOfTowns = 11, numofIntersections = numOfInters - numOfTowns;
     int i;
     public static Intersection[] inter = new Intersection[numOfInters];
+    public static Town[] town = new Town[numOfTowns];
     
     public static Group characters;
     public static Group paths;
@@ -64,69 +65,25 @@ public class SuperNewHeroSimulator extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        //generating intersections
+        //generating towns and intersections
+        generateTown(town);
         generateIntersection(inter);
 
-        //creating a road out of intersections
-        Road droga = new Road();
-        for(i=0; i<numOfInters; i++) {
-            droga.addIntersection(inter[i]);   
-        }
-        //droga.getRoad(); 
-        
         //drawing towns and intersections
         Group towns = new Group();
         for(i=0; i<numOfInters; i++) {
             towns.getChildren().add(inter[i].drawIntersection(i, numOfTowns));
         }
         root.getChildren().add(towns);
-        //towns.setId("towns");
-        //towns.setOpacity(0.5);
-        
-        //creating a character
-        for(i=0; i<10; i++) {
-            
-        }
-        //Hero stillNoob = new Hero(23, 10, 10, 2);
-//        Thread hero = new Thread(stillNoob);
-        //hero.start();
-        
-        //for(i=0; i<numOfInters; i++) inter[i].printIntersection();
-        
-        
-        //drawing a character
+              
+        //generating a character group
         characters = new Group();
-        //Node character = stillNoob.drawHuman();
-        //characters.getChildren().add(character);
         root.getChildren().add(characters);
         
         //seting up a path
         paths = new Group();
         paths.setAutoSizeChildren(true);
         root.getChildren().add(paths);
-        
-//        final Path heroPath = new Path();
-//        heroPath.getElements().add(new MoveTo(stillNoob.getLocationX(), stillNoob.getLocationY()));
-//        for(i=0; i<numOfInters; i++) {
-//            heroPath.getElements().add(new LineTo(inter[i].getIntersectionX(), inter[i].getIntersectionY()));
-//        }
-
-        //heroPath.getElements().add(new CubicCurveTo(100,100, 250,300,200,123));
-        
-//        paths.getChildren().add(heroPath);
-//        paths.getChildren().add(character);
-//        final PathTransition heroPathTransition = new PathTransition();
-        
-        
-//        heroPathTransition.setDuration(Duration.seconds(15.0));
-//        //heroPathTransition.setDelay(Duration.seconds(0.5));
-//        heroPathTransition.setPath(heroPath);
-//        heroPathTransition.setNode(character);
-//        heroPathTransition.setCycleCount(Timeline.INDEFINITE);
-//        heroPathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-//        heroPathTransition.setAutoReverse(true);
-//        heroPathTransition.getInterpolator();
-//        heroPathTransition.play();
         
         //animation
         /*
@@ -177,6 +134,7 @@ public class SuperNewHeroSimulator extends Application {
 //        System.out.println("heuristic:");
 //        System.out.println(heuristic_cost_estimate(inter[3], inter[10]));
         
+        //creating civilians
         for(i=0; i<10; i++) {
             Civilian cywil = new Civilian("cywil", i, inter[i].getIntersectionX(), inter[i].getIntersectionY(), inter[i]);       
             Thread thread = new Thread(cywil);
@@ -194,6 +152,25 @@ public class SuperNewHeroSimulator extends Application {
         launch(args);
     }
 
+    private void generateTown(Town[] town) {
+        for(i=0; i<numOfTowns; i++) {
+            town[i] = new Town();
+        }
+        town[0].setIntersection(500, 50);
+        town[1].setIntersection(275, 150);
+        town[2].setIntersection(725, 150);
+        town[3].setIntersection(50, 250);
+        town[4].setIntersection(950, 250);
+        town[5].setIntersection(500, 350);
+        town[6].setIntersection(50, 450);
+        town[7].setIntersection(950, 450);
+        town[8].setIntersection(275, 550);
+        town[9].setIntersection(725, 550);
+        town[10].setIntersection(500, 650);
+        
+        
+    }
+    
     private void generateIntersection(Intersection[] inter) {
         /**
          * intersections declaration:
@@ -201,20 +178,13 @@ public class SuperNewHeroSimulator extends Application {
          * 11-18 normal intersection
          */  
 
-        for(i=0; i<numOfInters; i++) {
+        for(i=numOfTowns; i<numOfInters; i++) {
             inter[i] = new Intersection();
         }
-        inter[0].setIntersection(500, 50);
-        inter[1].setIntersection(275, 150);
-        inter[2].setIntersection(725, 150);
-        inter[3].setIntersection(50, 250);
-        inter[4].setIntersection(950, 250);
-        inter[5].setIntersection(500, 350);
-        inter[6].setIntersection(50, 450);
-        inter[7].setIntersection(950, 450);
-        inter[8].setIntersection(275, 550);
-        inter[9].setIntersection(725, 550);
-        inter[10].setIntersection(500, 650);
+        for(i=0; i<numOfTowns; i++) {
+            inter[i] = town[i];
+        }        
+        
         inter[11].setIntersection(500, 150);
         inter[12].setIntersection(275, 250);
         inter[13].setIntersection(500, 250);
@@ -245,7 +215,7 @@ public class SuperNewHeroSimulator extends Application {
         inter[17].addNeighbours(inter[7], inter[9], inter[14], inter[16]);
         inter[18].addNeighbours(inter[8], inter[9], inter[10], inter[16]);    
     }
-    
+     
     public static ArrayList<Intersection> findPath(Intersection start, Intersection end) {
         ArrayList<Intersection> closedset = new ArrayList<>();  //set of noder already evaluated
         ArrayList<Intersection> openset = new ArrayList<>();    // set of tentative nodes to be evaluated

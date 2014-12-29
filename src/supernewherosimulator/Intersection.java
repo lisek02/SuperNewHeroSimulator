@@ -88,8 +88,7 @@ public class Intersection extends Place {
      * @param intersection - single neighbour
      */
     public void addNeighbours(Intersection... intersections) {
-        for(int i=0; i<intersections.length; i++) {
-            Intersection intersection = intersections[i];
+        for (Intersection intersection : intersections) {
             this.neighbours.add(intersection);
         }
     }

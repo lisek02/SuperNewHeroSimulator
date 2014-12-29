@@ -9,7 +9,7 @@ package supernewherosimulator;
  *
  * @author Lisek
  */
-public class Town extends Place {
+public class Town extends Intersection {
     
     private String name;
     private int population;
@@ -34,6 +34,20 @@ public class Town extends Place {
      */
     public void sendSuperHero() {
         
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
     
 }
