@@ -8,6 +8,11 @@ package supernewherosimulator;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.shape.Rectangle;
 import static supernewherosimulator.SuperNewHeroSimulator.numOfInters;
 
@@ -21,6 +26,12 @@ public class Intersection extends Place {
     private ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
     private int bound = 20;
     
+    public Label showIntersectionDetails() {
+        Label details = new Label();
+        details.setWrapText(true);
+        details.setText("(" + this.getIntersectionX() + " " + this.getIntersectionY() + ")\n");
+        return details;
+    }
     
     /**
      * set length of intersecttion's side

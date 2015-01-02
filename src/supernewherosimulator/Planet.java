@@ -5,6 +5,8 @@
  */
 package supernewherosimulator;
 
+import javafx.scene.control.Label;
+
 /**
  *
  * @author Lisek
@@ -15,6 +17,17 @@ public class Planet extends Intersection {
     private int population;
     private int powerSourcesTypes[] = new int[6];
     
+    
+    public Label showIntersectionDetails() {
+        Label details = new Label();
+        details.setWrapText(true);
+        details.setText("(" + this.getIntersectionX() + " " + this.getIntersectionY() + ")\n" +
+                        "Name: " + this.getName() + "\n" +
+                        "Population: " + this.getPopulation() + "\n"
+                        );
+        super.showIntersectionDetails();
+        return details;
+    }
     /**
      *
      */
@@ -48,6 +61,20 @@ public class Planet extends Intersection {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the population
+     */
+    public int getPopulation() {
+        return population;
+    }
+
+    /**
+     * @param population the population to set
+     */
+    public void setPopulation(int population) {
+        this.population = population;
     }
     
 }

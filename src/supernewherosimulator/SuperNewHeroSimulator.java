@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.EventListener;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,12 +25,16 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
+import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -50,7 +55,7 @@ public class SuperNewHeroSimulator extends Application {
     
     public static Group characters;
     public static Group paths;
-    
+       
     @Override
     public void start(Stage primaryStage) {
       
@@ -70,12 +75,52 @@ public class SuperNewHeroSimulator extends Application {
         generateIntersection(inter);
 
         //drawing towns and intersections
-        Group towns = new Group();
+        Group planets = new Group();
+        Node[] planetNode = new Node[numOfInters];
+
+        Group planetsLabels = new Group();
+        planets.getChildren().add(planetsLabels);
+
         for(i=0; i<numOfInters; i++) {
-            towns.getChildren().add(inter[i].drawIntersection(i, numOfTowns));
+            planetNode[i] = inter[i].drawIntersection(i, numOfTowns);
+            planets.getChildren().add(planetNode[i]);
+            
+            planetNode[i].setOnMouseEntered(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent event) {
+                    Intersection thisInter = null;
+                    Rectangle rec = (Rectangle)event.getTarget();
+                    for(i=0; i<numOfInters; i++) {
+                        if((inter[i].getIntersectionX() == rec.getX()) && (inter[i].getIntersectionY() == rec.getY())) {
+                            thisInter = inter[i];
+                        }
+                    }
+                    planetsLabels.getChildren().add(thisInter.showIntersectionDetails());
+                    thisInter.showIntersectionDetails();
+                    thisInter.printIntersection();           
+                }            
+            });
+            
+            planetNode[i].setOnMouseExited(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent event) {
+                    planetsLabels.getChildren().clear();
+                }
+            });
+            
+            
         }
-        root.getChildren().add(towns);
-              
+        root.getChildren().add(planets);
+
+
+
+        
+        Button button = new Button();
+        button.setMaxSize(inter[2].getBound()*2, inter[2].getBound()*2);
+        button.setLayoutX(inter[2].getIntersectionX());
+        button.setLayoutY(inter[2].getIntersectionY());
+        root.getChildren().add(button);
+        
+
+        
         //generating a character group
         characters = new Group();
         root.getChildren().add(characters);
@@ -160,6 +205,7 @@ public class SuperNewHeroSimulator extends Application {
         
         for(i=0; i<numOfTowns; i++) {
             planet[i] = new Planet();
+            planet[i].setPopulation(randInt(10, 30));
         }
         planet[0].setIntersection(500, 50);
         planet[0].setName("Aquarion");
@@ -168,12 +214,13 @@ public class SuperNewHeroSimulator extends Application {
         planet[2].setIntersection(725, 150);
         planet[2].setName("Picon");
         planet[3].setIntersection(50, 250);
+        planet[3].setName("Gemenon");
         planet[4].setIntersection(950, 250);
         planet[4].setName("Virgon");
         planet[5].setIntersection(500, 350);
         planet[5].setName("Caprica");
         planet[6].setIntersection(50, 450);
-        planet[6].setName("Aerilol");
+        planet[6].setName("Aerilon");
         planet[7].setIntersection(950, 450);
         planet[7].setName("Libran");
         planet[8].setIntersection(275, 550);
@@ -181,9 +228,7 @@ public class SuperNewHeroSimulator extends Application {
         planet[9].setIntersection(725, 550);
         planet[9].setName("Tauron");
         planet[10].setIntersection(500, 650);
-        planet[10].setName("Sagittarion");
-        
-        
+        planet[10].setName("Sagittarion");      
     }
     
     private void generateIntersection(Intersection[] inter) {
