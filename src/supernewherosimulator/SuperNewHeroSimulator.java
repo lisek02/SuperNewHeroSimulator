@@ -161,7 +161,7 @@ public class SuperNewHeroSimulator extends Application {
         
         int releaseTheKraken;
         //int townToReleaseFrom;
-        releaseTheKraken = 2000;
+        releaseTheKraken = 200;
         
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -172,11 +172,11 @@ public class SuperNewHeroSimulator extends Application {
                        System.out.println(townToReleaseFrom);
                        Civilian cywil = new Civilian("cywil", i, inter[townToReleaseFrom].getIntersectionX(), inter[townToReleaseFrom].getIntersectionY(), inter[townToReleaseFrom]);  
                        Thread thread = new Thread(cywil);
-                       Platform.runLater(thread);
-                
+                       Platform.runLater(thread);                
             }       
         }, 0, releaseTheKraken);
         
+
 
         
         

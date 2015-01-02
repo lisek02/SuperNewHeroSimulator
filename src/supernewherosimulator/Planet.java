@@ -77,4 +77,11 @@ public class Planet extends Intersection {
         this.population = population;
     }
     
+    /**
+     * decrease planet population by 1
+     */
+    public void decreasePopulation() {
+        this.population -= 1;
+    }    
+    
 }

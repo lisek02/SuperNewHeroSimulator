@@ -85,32 +85,33 @@ public abstract class Human implements Runnable {
     }
  
     public void run() {
-        Intersection homeTown = this.getFamilyTown();
-        Intersection toGo;
+        Planet homeTown = (Planet)this.getFamilyTown();
+        Planet toGo;
         
-        int toGoId;
-        do {
-            toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
-            toGo = SuperNewHeroSimulator.inter[toGoId];
-        } while (toGo == homeTown);
-        
-        ArrayList<Intersection> path = new ArrayList<>();
-        path = SuperNewHeroSimulator.findPath(homeTown, toGo);
-        
-        System.out.println("home town:");
-        homeTown.printIntersection();
-        System.out.println("to go:");
-        toGo.printIntersection();
-        
+        if(homeTown.getPopulation() != 0) {
+            homeTown.decreasePopulation();
+            
+            int toGoId;
+            do {
+                toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
+                toGo = (Planet) SuperNewHeroSimulator.inter[toGoId];
+            } while (toGo == homeTown);
 
-        
-        for (Intersection path1 : path) {
-            path1.printIntersection();            
-            this.moveBetween(path1);
-            this.setLocationX(path1.getIntersectionX());
-            this.setLocationY(path1.getIntersectionY());
-        }
-        System.out.println("Jestę wątkię");
+            ArrayList<Intersection> path = new ArrayList<>();
+            path = SuperNewHeroSimulator.findPath(homeTown, toGo);
+
+            System.out.println("home town:");
+            homeTown.printIntersection();
+            System.out.println("to go:");
+            toGo.printIntersection();
+
+            for (Intersection path1 : path) {
+                path1.printIntersection();            
+                this.moveBetween(path1);
+                this.setLocationX(path1.getIntersectionX());
+                this.setLocationY(path1.getIntersectionY());
+            }            
+        } else System.out.println("Brak mieszkańców");
     }    
     
     
