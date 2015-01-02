@@ -39,12 +39,15 @@ public abstract class Human implements Runnable {
         this.familyTown = familyTown;
     }
     
-    public void moveBetween(Intersection end) {
-        Node character = this.drawHuman();    
+    public void moveBetween(Intersection end, double delay) {
+        //Node character = this.drawHuman();
+        int bound = end.getBound()/2;
+        int rectangleBound = 5;
+             
         Path characterPath = new Path();
 
         int x,y,xe,ye;
-        int bound = end.getBound()/2;
+        
         
         if(this.getLocationX() == end.getIntersectionX()) {
             if((this.getLocationY() - end.getIntersectionY()) > 0) {        //up
@@ -71,8 +74,13 @@ public abstract class Human implements Runnable {
                 ye = y;
             }
         }
-                  
+
+        Rectangle human = new Rectangle(x - rectangleBound, y - rectangleBound, 10, 10);
+        human.setFill(Color.web("blue"));
+        Node character = human;
+        
         characterPath.getElements().add(new MoveTo(x, y));
+        //characterPath.getElements().add(new LineTo(x, y));
         characterPath.getElements().add(new LineTo(xe, ye));
         
         SuperNewHeroSimulator.paths.getChildren().add(character);
@@ -80,9 +88,10 @@ public abstract class Human implements Runnable {
         
         final PathTransition characterTransition = new PathTransition();
         
-        characterTransition.setDuration(Duration.seconds(2.0));
+        characterTransition.setDuration(Duration.seconds(1.0));
         characterTransition.setPath(characterPath);
         characterTransition.setNode(character);
+        characterTransition.setDelay(Duration.seconds(delay));
         characterTransition.play(); 
         characterTransition.setOnFinished(new EventHandler<ActionEvent>() {
 
@@ -98,6 +107,7 @@ public abstract class Human implements Runnable {
     public void run() {
         Planet homeTown = (Planet)this.getFamilyTown();
         Planet toGo;
+        double delay = 0.0;
         
         if(homeTown.getPopulation() != 0) {
             homeTown.decreasePopulation();
@@ -111,16 +121,18 @@ public abstract class Human implements Runnable {
             ArrayList<Intersection> path = new ArrayList<>();
             path = SuperNewHeroSimulator.findPath(homeTown, toGo);
 
-            System.out.println("home town:");
-            homeTown.printIntersection();
-            System.out.println("to go:");
-            toGo.printIntersection();
+//            System.out.println("home town:");
+//            homeTown.printIntersection();
+//            System.out.println("to go:");
+//            toGo.printIntersection();
 
             for (Intersection path1 : path) {
                 path1.printIntersection();            
-                this.moveBetween(path1);
+                this.moveBetween(path1, delay);
+                this.moveBetween(path1, delay);
                 this.setLocationX(path1.getIntersectionX());
                 this.setLocationY(path1.getIntersectionY());
+                delay += 1.0;
             }            
         } else System.out.println("Brak mieszkańców");
     }    
