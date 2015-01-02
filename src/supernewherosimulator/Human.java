@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -82,6 +84,15 @@ public abstract class Human implements Runnable {
         characterTransition.setPath(characterPath);
         characterTransition.setNode(character);
         characterTransition.play(); 
+        characterTransition.setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                SuperNewHeroSimulator.paths.getChildren().remove(character);
+            }
+        });
+        
+        
     }
  
     public void run() {
