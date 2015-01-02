@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.EventListener;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,6 +27,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -109,17 +112,6 @@ public class SuperNewHeroSimulator extends Application {
             
         }
         root.getChildren().add(planets);
-
-
-
-        
-        Button button = new Button();
-        button.setMaxSize(inter[2].getBound()*2, inter[2].getBound()*2);
-        button.setLayoutX(inter[2].getIntersectionX());
-        button.setLayoutY(inter[2].getIntersectionY());
-        root.getChildren().add(button);
-        
-
         
         //generating a character group
         characters = new Group();
@@ -130,33 +122,62 @@ public class SuperNewHeroSimulator extends Application {
         paths.setAutoSizeChildren(true);
         root.getChildren().add(paths);
         
-        //animation
-        /*
-        timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.setAutoReverse(true);
-        timeline.setAutoReverse(true);
+//        //timer        
+//        timeline = new Timeline();
+//        timeline.setCycleCount(Timeline.INDEFINITE);
+//        timeline.setAutoReverse(true);
+//        timeline.setAutoReverse(true);
+//             
+//        final Text timerText = new Text(10, 10, frame.toString());
+//        timerText.toFront();
+//        root.getChildren().add(timerText);
+//
+//        timer = new AnimationTimer() {
+//            @Override
+//            public void handle(long now) {
+//                timerText.setText(frame.toString());
+//                frame++;
+//                //character.setTranslateX(now * 0.00005);
+//                
+//                
+//                int releaseTheKraken;
+//                int townToReleaseFrom;
+//                do {
+//                    releaseTheKraken = 100;
+//                    //releaseTheKraken = randInt(3, 9);
+//                    if(frame % releaseTheKraken == 0) {
+//                        System.out.println("now ");
+//        //               townToReleaseFrom = randInt(0, numOfTowns-1);
+//        //               Civilian cywil = new Civilian("cywil", i, inter[townToReleaseFrom].getIntersectionX(), inter[townToReleaseFrom].getIntersectionY(), inter[townToReleaseFrom]);  
+//        //               Thread thread = new Thread(cywil);
+//        //               thread.run();
+//                    }            
+//                } while(frame != 3000);
+//            }
+//        };
+//        
+//        timeline.play();
+//        timer.start();
         
+        int releaseTheKraken;
+        //int townToReleaseFrom;
+        releaseTheKraken = 2000;
         
-        
-        final Text timerText = new Text(10, 10, frame.toString());
-        towns.getChildren().add(timerText);     //Poprawić
-        timerText.toFront();
-        int animationStartX = 5;
-        int animationStartY = 5;
-        
-        
-        timer = new AnimationTimer() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            
             @Override
-            public void handle(long now) {
-                timerText.setText(frame.toString());
-                frame++;
-                character.setTranslateX(now * 0.00005);
-            }
-        };
-          
-        timeline.play();
-        timer.start();*/
+            public void run() {
+                       int townToReleaseFrom = randInt(0, numOfTowns-1);
+                       System.out.println(townToReleaseFrom);
+                       Civilian cywil = new Civilian("cywil", i, inter[townToReleaseFrom].getIntersectionX(), inter[townToReleaseFrom].getIntersectionY(), inter[townToReleaseFrom]);  
+                       Thread thread = new Thread(cywil);
+                       Platform.runLater(thread);
+                
+            }       
+        }, 0, releaseTheKraken);
+        
+
         
         
         //TESTY
@@ -180,11 +201,11 @@ public class SuperNewHeroSimulator extends Application {
 //        System.out.println(heuristic_cost_estimate(inter[3], inter[10]));
         
         //creating civilians
-        for(i=0; i<10; i++) {
-            Civilian cywil = new Civilian("cywil", i, inter[i].getIntersectionX(), inter[i].getIntersectionY(), inter[i]);       
-            Thread thread = new Thread(cywil);
-            thread.run();
-        }
+//        for(i=0; i<10; i++) {
+//            Civilian cywil = new Civilian("cywil", i, inter[i].getIntersectionX(), inter[i].getIntersectionY(), inter[i]);       
+//            Thread thread = new Thread(cywil);
+//            thread.run();
+//        }
 
 
                

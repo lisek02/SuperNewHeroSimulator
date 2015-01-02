@@ -11,9 +11,11 @@ package supernewherosimulator;
  */
 public class Villain extends Hero {
 
-    public Villain(int id, int locationX, int locationY, int speed) {
-        super(id, locationX, locationY, speed);
+    public Villain(String name, int id, int locationX, int locationY, Intersection familyTown) {
+        super(name, id, locationX, locationY, familyTown);
     }
+
+
     
     /**
      *

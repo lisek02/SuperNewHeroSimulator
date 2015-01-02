@@ -18,13 +18,12 @@ public class Hero extends Human {
     private int endurance;
     private int enegry;
     private int skill;
-    
-    Hero(int id, int locationX, int locationY, int speed){
-        this.setId(id);
-        this.setLocationX(locationX);
-        this.setLocationY(locationY);
-        this.speed = speed;
+
+    public Hero(String name, int id, int locationX, int locationY, Intersection familyTown) {
+        super(name, id, locationX, locationY, familyTown);
     }
+    
+
     
     public void run() {
         super.run();

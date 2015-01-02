@@ -87,6 +87,7 @@ public abstract class Human implements Runnable {
     public void run() {
         Intersection homeTown = this.getFamilyTown();
         Intersection toGo;
+        
         int toGoId;
         do {
             toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
@@ -109,8 +110,6 @@ public abstract class Human implements Runnable {
             this.setLocationX(path1.getIntersectionX());
             this.setLocationY(path1.getIntersectionY());
         }
-//        System.err.println("----");
-//        this.animate(path);
         System.out.println("Jestę wątkię");
     }    
     
