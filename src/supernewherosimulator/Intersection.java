@@ -20,7 +20,7 @@ import static supernewherosimulator.SuperNewHeroSimulator.numOfInters;
  *
  * @author Lisek
  */
-public class Intersection extends Place {
+public class Intersection {
     private int x;
     private int y;
     private ArrayList<Intersection> neighbours = new ArrayList<Intersection>();

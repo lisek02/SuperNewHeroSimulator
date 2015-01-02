@@ -9,11 +9,17 @@ package supernewherosimulator;
  *
  * @author Lisek
  */
-public abstract class Place {
+public class Place {
     
-    private int id;
     private int locationX;
     private int locationY;
+
+    public Place(int locationX, int locationY) {
+        this.locationX = locationX;
+        this.locationY = locationY;
+    }
+    
+    
     
     /**
      *
@@ -27,6 +33,34 @@ public abstract class Place {
      */
     public void destroy() {
         
+    }
+
+    /**
+     * @return the locationX
+     */
+    public int getLocationX() {
+        return locationX;
+    }
+
+    /**
+     * @param locationX the locationX to set
+     */
+    public void setLocationX(int locationX) {
+        this.locationX = locationX;
+    }
+
+    /**
+     * @return the locationY
+     */
+    public int getLocationY() {
+        return locationY;
+    }
+
+    /**
+     * @param locationY the locationY to set
+     */
+    public void setLocationY(int locationY) {
+        this.locationY = locationY;
     }
     
 }

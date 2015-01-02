@@ -30,6 +30,7 @@ public abstract class Human implements Runnable {
     private int locationX;
     private int locationY;
     private Intersection familyTown;
+    private Intersection currentPosition;
     
     Human(String name, int id, int locationX, int locationY, Intersection familyTown) {
         this.setName(name);
@@ -37,6 +38,66 @@ public abstract class Human implements Runnable {
         this.setLocationX(locationX);
         this.setLocationY(locationY);
         this.familyTown = familyTown;
+    }
+    
+    public Place calculateStartPosition(Intersection currentIntersection, Intersection endIntersection) {
+        int bound = currentIntersection.getBound()/2;
+        
+        int begX = currentIntersection.getIntersectionX();
+        int begY = currentIntersection.getIntersectionY();
+        int endX = endIntersection.getIntersectionX();
+        int endY = endIntersection.getIntersectionY();
+        int resX,resY;
+        
+        if(begX == endX) {
+            if(begY - endY > 0) {                                                               //up
+                resX = begX + 2*bound;
+                resY = begY;
+            } else {                                                                            //down
+                resX = begX;
+                resY = begY + 2*bound;
+            }
+        } else {
+            if((begX - endX > 0)) {                                                             //left
+                resX = begX;
+                resY = begY;
+            } else {                                                                            //right
+                resX = begX + 2*bound;
+                resY = begY + 2*bound;
+            }
+        }    
+        
+        return(new Place(resX,resY));
+    }
+  
+    public Place calculateEndPosition(Intersection currentIntersection, Intersection endIntersection) {
+        int bound = currentIntersection.getBound()/2;
+        
+        int begX = currentIntersection.getIntersectionX();
+        int begY = currentIntersection.getIntersectionY();
+        int endX = endIntersection.getIntersectionX();
+        int endY = endIntersection.getIntersectionY();
+        int resX,resY;
+        
+        if(begX == endX) {
+            if(begY - endY > 0) {                                                               //up
+                resX = begX + 2*bound;
+                resY = endY + 2*bound;
+            } else {                                                                            //down
+                resX = begX;
+                resY = endY ;
+            }
+        } else {
+            if((begX - endX > 0)) {                                                             //left
+                resX = endX + 2*bound;
+                resY = begY;
+            } else {                                                                            //right
+                resX = endX;
+                resY = begY + 2*bound;
+            }
+        }    
+        
+        return(new Place(resX,resY));
     }
     
     public void moveBetween(Intersection end, double delay) {
@@ -109,6 +170,11 @@ public abstract class Human implements Runnable {
         Planet toGo;
         double delay = 0.0;
         
+        Intersection currentIntersection = new Intersection();
+        currentIntersection.setIntersection(this.familyTown.getIntersectionX(), this.familyTown.getIntersectionY());
+        Intersection endIntersection;
+        Place startPosition, endPosition;
+        
         if(homeTown.getPopulation() != 0) {
             homeTown.decreasePopulation();
             
@@ -126,12 +192,28 @@ public abstract class Human implements Runnable {
 //            System.out.println("to go:");
 //            toGo.printIntersection();
 
+            
             for (Intersection path1 : path) {
-                path1.printIntersection();            
-                this.moveBetween(path1, delay);
-                this.moveBetween(path1, delay);
-                this.setLocationX(path1.getIntersectionX());
-                this.setLocationY(path1.getIntersectionY());
+                path1.printIntersection();
+                
+                endIntersection = path1;
+                
+                startPosition = calculateStartPosition(currentIntersection, endIntersection);
+                endPosition = calculateEndPosition(currentIntersection, endIntersection);
+                
+//                System.out.println("test koordynatów");
+//                System.out.println(startPosition.getLocationX());
+//                System.out.println(startPosition.getLocationY());
+//                System.out.println(endPosition.getLocationX());
+//                System.out.println(endPosition.getLocationX());
+                
+                this.moveBetween(currentIntersection, startPosition, delay);
+                this.moveBetween(startPosition, endPosition, delay);
+                
+                currentIntersection = path1;
+     
+//                this.setLocationX(path1.getIntersectionX());
+//                this.setLocationY(path1.getIntersectionY());
                 delay += 1.0;
             }            
         } else System.out.println("Brak mieszkańców");

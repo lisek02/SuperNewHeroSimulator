@@ -17,7 +17,6 @@ public class Planet extends Intersection {
     private int population;
     private int powerSourcesTypes[] = new int[6];
     
-    
     public Label showIntersectionDetails() {
         Label details = new Label();
         details.setWrapText(true);
