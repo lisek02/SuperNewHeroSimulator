@@ -7,6 +7,9 @@ package supernewherosimulator;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -128,7 +131,7 @@ public abstract class Human implements Runnable {
             @Override
             public void handle(ActionEvent event) {
                 SuperNewHeroSimulator.paths.getChildren().remove(character);
-                //character.setVisible(true);
+
             }
         });
     }
@@ -138,7 +141,8 @@ public abstract class Human implements Runnable {
         Planet toGo;
         double delay = 0.0;
         
-        Intersection currentIntersection = new Intersection(this.familyTown.getX(), this.familyTown.getY());
+        //Intersection currentIntersection = new Intersection(this.familyTown.getX(), this.familyTown.getY(), new Semaphore(1, false));
+        Intersection currentIntersection = this.familyTown;
         Intersection endIntersection;
         Place startPosition, endPosition;
         
@@ -165,13 +169,24 @@ public abstract class Human implements Runnable {
                 startPosition = calculateStartPosition(currentIntersection, endIntersection);
                 endPosition = calculateEndPosition(currentIntersection, endIntersection);
                 
-                //tu musi być semafor
-                this.moveBetween(currentHumanPosition, startPosition, delay, 0.5);
-                delay += 0.5;
-                //aż dotąd
-               
-                this.moveBetween(startPosition, endPosition, delay, 1.0);
-                delay += 1.0;
+                try {
+                    currentIntersection.sem.acquire();
+                } catch(InterruptedException e) {
+                    System.out.println("exception");
+                }
+//                System.out.println("id: " + this.getId());
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+                this.moveBetween(currentHumanPosition, startPosition, delay, 5.5);
+                delay += 5.5;
+                
+                currentIntersection.sem.release();
+                
+                this.moveBetween(startPosition, endPosition, delay, 3.0);
+                delay += 3.0;
                 
                 currentIntersection = path1;
                 startPosition = endPosition;

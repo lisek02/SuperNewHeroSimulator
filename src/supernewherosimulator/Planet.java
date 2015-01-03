@@ -5,6 +5,7 @@
  */
 package supernewherosimulator;
 
+import java.util.concurrent.Semaphore;
 import javafx.scene.control.Label;
 
 /**
@@ -17,8 +18,8 @@ public class Planet extends Intersection {
     private int population;
     private int powerSourcesTypes[] = new int[6];
 
-    public Planet(int x, int y, String name, int population) {
-        super(x, y);
+    public Planet(int x, int y, Semaphore sem, String name, int population) {
+        super(x, y, sem);
         this.name = name;
         this.population = population;
     }

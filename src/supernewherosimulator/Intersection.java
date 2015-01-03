@@ -8,6 +8,7 @@ package supernewherosimulator;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
@@ -24,14 +25,17 @@ public class Intersection extends Place {
     private ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
     private int bound = 20;
     
-    public Intersection(int x, int y) {
+    public Semaphore sem;
+    
+    public Intersection(int x, int y, Semaphore sem) {
         super(x, y);
+        this.sem = sem;
     }
     
     public Label showIntersectionDetails() {
         Label details = new Label();
         details.setWrapText(true);
-        details.setText("(" + this.getX() + " " + this.getY() + ")\n");
+        details.setText("(" + this.getX() + " " + this.getY() + ")\n" + this.sem.toString());
         return details;
     }
     

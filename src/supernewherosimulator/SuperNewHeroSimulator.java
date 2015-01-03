@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.EventListener;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -122,42 +123,6 @@ public class SuperNewHeroSimulator extends Application {
         paths.setAutoSizeChildren(true);
         root.getChildren().add(paths);
         
-//        //timer        
-//        timeline = new Timeline();
-//        timeline.setCycleCount(Timeline.INDEFINITE);
-//        timeline.setAutoReverse(true);
-//        timeline.setAutoReverse(true);
-//             
-//        final Text timerText = new Text(10, 10, frame.toString());
-//        timerText.toFront();
-//        root.getChildren().add(timerText);
-//
-//        timer = new AnimationTimer() {
-//            @Override
-//            public void handle(long now) {
-//                timerText.setText(frame.toString());
-//                frame++;
-//                //character.setTranslateX(now * 0.00005);
-//                
-//                
-//                int releaseTheKraken;
-//                int townToReleaseFrom;
-//                do {
-//                    releaseTheKraken = 100;
-//                    //releaseTheKraken = randInt(3, 9);
-//                    if(frame % releaseTheKraken == 0) {
-//                        System.out.println("now ");
-//        //               townToReleaseFrom = randInt(0, numOfTowns-1);
-//        //               Civilian cywil = new Civilian("cywil", i, inter[townToReleaseFrom].getIntersectionX(), inter[townToReleaseFrom].getIntersectionY(), inter[townToReleaseFrom]);  
-//        //               Thread thread = new Thread(cywil);
-//        //               thread.run();
-//                    }            
-//                } while(frame != 3000);
-//            }
-//        };
-//        
-//        timeline.play();
-//        timer.start();
         
         int releaseTheKraken;
         //int townToReleaseFrom;
@@ -170,11 +135,12 @@ public class SuperNewHeroSimulator extends Application {
             public void run() {
                        int townToReleaseFrom = randInt(0, numOfTowns-1);
                        System.out.println(townToReleaseFrom);
-                       Civilian cywil = new Civilian("cywil", i, inter[townToReleaseFrom].getX(), inter[townToReleaseFrom].getY(), inter[townToReleaseFrom]);  
+                       Civilian cywil = new Civilian("cywil" + randInt(1, 1000), i, inter[townToReleaseFrom].getX(), inter[townToReleaseFrom].getY(), inter[townToReleaseFrom]);  
                        Thread thread = new Thread(cywil);
                        Platform.runLater(thread);                
             }       
         }, 0, releaseTheKraken);
+       
         
 
 
@@ -225,17 +191,17 @@ public class SuperNewHeroSimulator extends Application {
 //    }        
         int min = 10;
         int max = 30;
-        planet[0] = new Planet(500,50,"Aquarion", randInt(min, max));
-        planet[1] = new Planet(275,150,"Leonis", randInt(min, max));
-        planet[2] = new Planet(725,150,"Picon", randInt(min, max));
-        planet[3] = new Planet(50,250,"Gemenon", randInt(min, max));
-        planet[4] = new Planet(950,250,"Virgon", randInt(min, max));
-        planet[5] = new Planet(500,350,"Caprica", randInt(min, max));
-        planet[6] = new Planet(50,450,"Aerilon", randInt(min, max));
-        planet[7] = new Planet(950,450,"Libran", randInt(min, max));
-        planet[8] = new Planet(275,550,"Canceron", randInt(min, max));
-        planet[9] = new Planet(725,550,"Tauron", randInt(min, max));
-        planet[10] = new Planet(500,650,"Sagittarion", randInt(min, max));     
+        planet[0] = new Planet(500,50,new Semaphore(1, false),"Aquarion", randInt(min, max));
+        planet[1] = new Planet(275,150,new Semaphore(1, false),"Leonis", randInt(min, max));
+        planet[2] = new Planet(725,150,new Semaphore(1, false),"Picon", randInt(min, max));
+        planet[3] = new Planet(50,250,new Semaphore(1, false),"Gemenon", randInt(min, max));
+        planet[4] = new Planet(950,250,new Semaphore(1, false),"Virgon", randInt(min, max));
+        planet[5] = new Planet(500,350,new Semaphore(1, false),"Caprica", randInt(min, max));
+        planet[6] = new Planet(50,450,new Semaphore(1, false),"Aerilon", randInt(min, max));
+        planet[7] = new Planet(950,450,new Semaphore(1, false),"Libran", randInt(min, max));
+        planet[8] = new Planet(275,550,new Semaphore(1, false),"Canceron", randInt(min, max));
+        planet[9] = new Planet(725,550,new Semaphore(1, false),"Tauron", randInt(min, max));
+        planet[10] = new Planet(500,650,new Semaphore(1, false),"Sagittarion", randInt(min, max));     
     }
     
     private void generateIntersection(Intersection[] inter) {
@@ -249,14 +215,14 @@ public class SuperNewHeroSimulator extends Application {
             inter[i] = planet[i];
         }        
 
-        inter[11] = new Intersection(500, 150);
-        inter[12] = new Intersection(275, 250);
-        inter[13] = new Intersection(500, 250);
-        inter[14] = new Intersection(725, 250);
-        inter[15] = new Intersection(275, 450);
-        inter[16] = new Intersection(500, 450);
-        inter[17] = new Intersection(725, 450);
-        inter[18] = new Intersection(500, 550);
+        inter[11] = new Intersection(500, 150, new Semaphore(1, false));
+        inter[12] = new Intersection(275, 250, new Semaphore(1, false));
+        inter[13] = new Intersection(500, 250, new Semaphore(1, false));
+        inter[14] = new Intersection(725, 250, new Semaphore(1, false));
+        inter[15] = new Intersection(275, 450, new Semaphore(1, false));
+        inter[16] = new Intersection(500, 450, new Semaphore(1, false));
+        inter[17] = new Intersection(725, 450, new Semaphore(1, false));
+        inter[18] = new Intersection(500, 550, new Semaphore(1, false));
         
         //neighbours
         inter[0].addNeighbours(inter[11]);
