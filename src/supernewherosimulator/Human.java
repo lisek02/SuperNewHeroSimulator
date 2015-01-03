@@ -43,10 +43,10 @@ public abstract class Human implements Runnable {
     public Place calculateStartPosition(Intersection currentIntersection, Intersection endIntersection) {
         int bound = currentIntersection.getBound()/2;
         
-        int begX = currentIntersection.getIntersectionX();
-        int begY = currentIntersection.getIntersectionY();
-        int endX = endIntersection.getIntersectionX();
-        int endY = endIntersection.getIntersectionY();
+        int begX = currentIntersection.getX();
+        int begY = currentIntersection.getY();
+        int endX = endIntersection.getX();
+        int endY = endIntersection.getY();
         int resX,resY;
         
         if(begX == endX) {
@@ -73,18 +73,18 @@ public abstract class Human implements Runnable {
     public Place calculateEndPosition(Intersection currentIntersection, Intersection endIntersection) {
         int bound = currentIntersection.getBound()/2;
         
-        int begX = currentIntersection.getIntersectionX();
-        int begY = currentIntersection.getIntersectionY();
-        int endX = endIntersection.getIntersectionX();
-        int endY = endIntersection.getIntersectionY();
+        int begX = currentIntersection.getX();
+        int begY = currentIntersection.getY();
+        int endX = endIntersection.getX();
+        int endY = endIntersection.getY();
         int resX,resY;
         
         if(begX == endX) {
             if(begY - endY > 0) {                                                               //up
-                resX = begX + 2*bound;
+                resX = endX + 2*bound;
                 resY = endY + 2*bound;
             } else {                                                                            //down
-                resX = begX;
+                resX = endX;
                 resY = endY ;
             }
         } else {
@@ -93,63 +93,31 @@ public abstract class Human implements Runnable {
                 resY = begY;
             } else {                                                                            //right
                 resX = endX;
-                resY = begY + 2*bound;
+                resY = endY + 2*bound;
             }
         }    
         
         return(new Place(resX,resY));
     }
-    
-    public void moveBetween(Intersection end, double delay) {
-        //Node character = this.drawHuman();
-        int bound = end.getBound()/2;
-        int rectangleBound = 5;
-             
+
+    public void moveBetween(Place start, Place end, double delay, double time) {
         Path characterPath = new Path();
-
-        int x,y,xe,ye;
         
+        int rectangleBound = 5;
         
-        if(this.getLocationX() == end.getIntersectionX()) {
-            if((this.getLocationY() - end.getIntersectionY()) > 0) {        //up
-                x = this.locationX + 2*bound;
-                y = this.locationY;
-                xe = x;
-                ye = end.getIntersectionY() + 2*bound;
-            } else {                                                        //down
-                x = this.locationX;
-                y = this.locationY + 2*bound;
-                xe = x;
-                ye = end.getIntersectionY();
-            }
-        } else {
-            if((this.getLocationX() - end.getIntersectionX() > 0)) {        //left
-                x = this.locationX;
-                y = this.locationY;
-                xe = end.getIntersectionX() + 2*bound;
-                ye = y;
-            } else {                                                        //right
-                x = this.locationX + 2*bound;
-                y = this.locationY + 2*bound;
-                xe = end.getIntersectionX();
-                ye = y;
-            }
-        }
-
-        Rectangle human = new Rectangle(x - rectangleBound, y - rectangleBound, 10, 10);
+        Rectangle human = new Rectangle(start.getX() - rectangleBound, start.getY() - rectangleBound, 10, 10);
         human.setFill(Color.web("blue"));
         Node character = human;
         
-        characterPath.getElements().add(new MoveTo(x, y));
-        //characterPath.getElements().add(new LineTo(x, y));
-        characterPath.getElements().add(new LineTo(xe, ye));
+        characterPath.getElements().add(new MoveTo(start.getX(), start.getY()));
+        characterPath.getElements().add(new LineTo(end.getX(), end.getY()));
         
         SuperNewHeroSimulator.paths.getChildren().add(character);
         SuperNewHeroSimulator.paths.getChildren().add(characterPath);
         
         final PathTransition characterTransition = new PathTransition();
         
-        characterTransition.setDuration(Duration.seconds(1.0));
+        characterTransition.setDuration(Duration.seconds(time));
         characterTransition.setPath(characterPath);
         characterTransition.setNode(character);
         characterTransition.setDelay(Duration.seconds(delay));
@@ -161,17 +129,14 @@ public abstract class Human implements Runnable {
                 SuperNewHeroSimulator.paths.getChildren().remove(character);
             }
         });
-        
-        
     }
- 
+    
     public void run() {
         Planet homeTown = (Planet)this.getFamilyTown();
         Planet toGo;
         double delay = 0.0;
         
-        Intersection currentIntersection = new Intersection();
-        currentIntersection.setIntersection(this.familyTown.getIntersectionX(), this.familyTown.getIntersectionY());
+        Intersection currentIntersection = new Intersection(this.familyTown.getX(), this.familyTown.getY());
         Intersection endIntersection;
         Place startPosition, endPosition;
         
@@ -191,10 +156,12 @@ public abstract class Human implements Runnable {
 //            homeTown.printIntersection();
 //            System.out.println("to go:");
 //            toGo.printIntersection();
-
             
+            Place currentHumanPosition = (Place) currentIntersection;
+
+            path.remove(0);
             for (Intersection path1 : path) {
-                path1.printIntersection();
+                path1.print();
                 
                 endIntersection = path1;
                 
@@ -206,73 +173,24 @@ public abstract class Human implements Runnable {
 //                System.out.println(startPosition.getLocationY());
 //                System.out.println(endPosition.getLocationX());
 //                System.out.println(endPosition.getLocationX());
+                //Place currentHumanPosition = (Place) currentIntersection;
                 
-                this.moveBetween(currentIntersection, startPosition, delay);
-                this.moveBetween(startPosition, endPosition, delay);
+                this.moveBetween(currentHumanPosition, startPosition, delay, 0.5);
+                delay += 0.5;
+                
+                this.moveBetween(startPosition, endPosition, delay, 1.0);
+                delay += 1.0;
                 
                 currentIntersection = path1;
+                startPosition = endPosition;
+                currentHumanPosition = endPosition;
      
 //                this.setLocationX(path1.getIntersectionX());
 //                this.setLocationY(path1.getIntersectionY());
-                delay += 1.0;
+
             }            
         } else System.out.println("Brak mieszkańców");
     }    
-    
-    
-//    public void animate(ArrayList<Intersection> intersectionPath) {
-//        Node character = this.drawHuman();    
-//        Path characterPath = new Path();
-//        
-//        characterPath.getElements().add(new MoveTo(this.getLocationX(), this.getLocationY()));
-//        
-//        for(int i=0; i<intersectionPath.size(); i++) {
-//            Intersection currentInter = intersectionPath.get(i);
-//            characterPath.getElements().add(new LineTo(currentInter.getIntersectionX(), currentInter.getIntersectionY()));
-//        }
-//
-//        SuperNewHeroSimulator.paths.getChildren().add(character);
-//        SuperNewHeroSimulator.paths.getChildren().add(characterPath);
-//        
-//        final PathTransition characterTransition = new PathTransition();
-//        
-//        characterTransition.setDuration(Duration.seconds(5.0));
-//        //characterTransition.setDelay(Duration.seconds(0.5));
-//        characterTransition.setPath(characterPath);
-//        characterTransition.setNode(character);
-//        characterTransition.setCycleCount(1);
-//        characterTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-//        characterTransition.setAutoReverse(false);
-//        characterTransition.getInterpolator();
-//        characterTransition.play();
-//    }
-    
-//    public void run() {
-//        Intersection homeTown = this.getFamilyTown();
-//        Intersection toGo;
-//        int toGoId;
-//        do {
-//            toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
-//            toGo = SuperNewHeroSimulator.inter[toGoId];
-//        } while (toGo == homeTown);
-//        
-////        this.locationX = SuperNewHeroSimulator.inter[homeTown].getIntersectionX();
-////        this.locationY = SuperNewHeroSimulator.inter[homeTown].getIntersectionY();
-//        ArrayList<Intersection> path = new ArrayList<>();
-//        path = SuperNewHeroSimulator.findPath(homeTown, toGo);
-//        System.out.println("home town:");
-//        homeTown.printIntersection();
-//        System.out.println("to go:");
-//        toGo.printIntersection();
-//        for (Intersection path1 : path) {
-//            path1.printIntersection();
-//        }
-//        System.err.println("----");
-//        this.animate(path);
-//        System.out.println("Jestę wątkię");
-//    }
-    
-
     
     /**
      * @return the name

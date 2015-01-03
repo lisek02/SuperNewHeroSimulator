@@ -93,13 +93,13 @@ public class SuperNewHeroSimulator extends Application {
                     Intersection thisInter = null;
                     Rectangle rec = (Rectangle)event.getTarget();
                     for(i=0; i<numOfInters; i++) {
-                        if((inter[i].getIntersectionX() == rec.getX()) && (inter[i].getIntersectionY() == rec.getY())) {
+                        if((inter[i].getX() == rec.getX()) && (inter[i].getY() == rec.getY())) {
                             thisInter = inter[i];
                         }
                     }
                     planetsLabels.getChildren().add(thisInter.showIntersectionDetails());
                     thisInter.showIntersectionDetails();
-                    thisInter.printIntersection();           
+                    thisInter.print();           
                 }            
             });
             
@@ -170,7 +170,7 @@ public class SuperNewHeroSimulator extends Application {
             public void run() {
                        int townToReleaseFrom = randInt(0, numOfTowns-1);
                        System.out.println(townToReleaseFrom);
-                       Civilian cywil = new Civilian("cywil", i, inter[townToReleaseFrom].getIntersectionX(), inter[townToReleaseFrom].getIntersectionY(), inter[townToReleaseFrom]);  
+                       Civilian cywil = new Civilian("cywil", i, inter[townToReleaseFrom].getX(), inter[townToReleaseFrom].getY(), inter[townToReleaseFrom]);  
                        Thread thread = new Thread(cywil);
                        Platform.runLater(thread);                
             }       
@@ -223,33 +223,19 @@ public class SuperNewHeroSimulator extends Application {
 //    public enum planetNames {
 //        Aquarion, Aerilol, Canceron, Gemenon, Caprica, Leonis, Libran, Picon, Sagittaron, Tauron, Virgon
 //    }        
-        
-        for(i=0; i<numOfTowns; i++) {
-            planet[i] = new Planet();
-            planet[i].setPopulation(randInt(10, 30));
-        }
-        planet[0].setIntersection(500, 50);
-        planet[0].setName("Aquarion");
-        planet[1].setIntersection(275, 150);
-        planet[1].setName("Leonis");
-        planet[2].setIntersection(725, 150);
-        planet[2].setName("Picon");
-        planet[3].setIntersection(50, 250);
-        planet[3].setName("Gemenon");
-        planet[4].setIntersection(950, 250);
-        planet[4].setName("Virgon");
-        planet[5].setIntersection(500, 350);
-        planet[5].setName("Caprica");
-        planet[6].setIntersection(50, 450);
-        planet[6].setName("Aerilon");
-        planet[7].setIntersection(950, 450);
-        planet[7].setName("Libran");
-        planet[8].setIntersection(275, 550);
-        planet[8].setName("Canceron");
-        planet[9].setIntersection(725, 550);
-        planet[9].setName("Tauron");
-        planet[10].setIntersection(500, 650);
-        planet[10].setName("Sagittarion");      
+        int min = 10;
+        int max = 30;
+        planet[0] = new Planet(500,50,"Aquarion", randInt(min, max));
+        planet[1] = new Planet(275,150,"Leonis", randInt(min, max));
+        planet[2] = new Planet(725,150,"Picon", randInt(min, max));
+        planet[3] = new Planet(50,250,"Gemenon", randInt(min, max));
+        planet[4] = new Planet(950,250,"Virgon", randInt(min, max));
+        planet[5] = new Planet(500,350,"Caprica", randInt(min, max));
+        planet[6] = new Planet(50,450,"Aerilon", randInt(min, max));
+        planet[7] = new Planet(950,450,"Libran", randInt(min, max));
+        planet[8] = new Planet(275,550,"Canceron", randInt(min, max));
+        planet[9] = new Planet(725,550,"Tauron", randInt(min, max));
+        planet[10] = new Planet(500,650,"Sagittarion", randInt(min, max));     
     }
     
     private void generateIntersection(Intersection[] inter) {
@@ -259,21 +245,18 @@ public class SuperNewHeroSimulator extends Application {
          * 11-18 normal intersection
          */  
 
-        for(i=numOfTowns; i<numOfInters; i++) {
-            inter[i] = new Intersection();
-        }
         for(i=0; i<numOfTowns; i++) {
             inter[i] = planet[i];
         }        
-        
-        inter[11].setIntersection(500, 150);
-        inter[12].setIntersection(275, 250);
-        inter[13].setIntersection(500, 250);
-        inter[14].setIntersection(725, 250);
-        inter[15].setIntersection(275, 450);
-        inter[16].setIntersection(500, 450);
-        inter[17].setIntersection(725, 450);
-        inter[18].setIntersection(500, 550);
+
+        inter[11] = new Intersection(500, 150);
+        inter[12] = new Intersection(275, 250);
+        inter[13] = new Intersection(500, 250);
+        inter[14] = new Intersection(725, 250);
+        inter[15] = new Intersection(275, 450);
+        inter[16] = new Intersection(500, 450);
+        inter[17] = new Intersection(725, 450);
+        inter[18] = new Intersection(500, 550);
         
         //neighbours
         inter[0].addNeighbours(inter[11]);
@@ -372,7 +355,7 @@ public class SuperNewHeroSimulator extends Application {
      * @return heuristic distance between starting and ending intersection
      */
     private static double heuristic_cost_estimate(Intersection start, Intersection end) {
-        double distance = sqrt(Math.pow((start.getIntersectionX() - end.getIntersectionX()),2.0) + Math.pow((start.getIntersectionY() - end.getIntersectionY()),2.0));    
+        double distance = sqrt(Math.pow((start.getX() - end.getX()),2.0) + Math.pow((start.getY() - end.getY()),2.0));    
         return distance;
     }
     

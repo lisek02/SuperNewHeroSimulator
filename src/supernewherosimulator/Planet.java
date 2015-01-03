@@ -16,11 +16,17 @@ public class Planet extends Intersection {
     private String name;
     private int population;
     private int powerSourcesTypes[] = new int[6];
+
+    public Planet(int x, int y, String name, int population) {
+        super(x, y);
+        this.name = name;
+        this.population = population;
+    }
     
     public Label showIntersectionDetails() {
         Label details = new Label();
         details.setWrapText(true);
-        details.setText("(" + this.getIntersectionX() + " " + this.getIntersectionY() + ")\n" +
+        details.setText("(" + this.getX() + " " + this.getY() + ")\n" +
                         "Name: " + this.getName() + "\n" +
                         "Population: " + this.getPopulation() + "\n"
                         );

@@ -20,16 +20,18 @@ import static supernewherosimulator.SuperNewHeroSimulator.numOfInters;
  *
  * @author Lisek
  */
-public class Intersection {
-    private int x;
-    private int y;
+public class Intersection extends Place {
     private ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
     private int bound = 20;
+    
+    public Intersection(int x, int y) {
+        super(x, y);
+    }
     
     public Label showIntersectionDetails() {
         Label details = new Label();
         details.setWrapText(true);
-        details.setText("(" + this.getIntersectionX() + " " + this.getIntersectionY() + ")\n");
+        details.setText("(" + this.getX() + " " + this.getY() + ")\n");
         return details;
     }
     
@@ -48,37 +50,6 @@ public class Intersection {
         return this.bound;
     }
     
-    
-    /**
-     * set coordinates for intersection
-     * @param x - X coordinate
-     * @param y - Y coordinate
-     */
-    public void setIntersection(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-    
-    /**
-     * @return X coordinate of intersection
-     */
-    public int getIntersectionX() {
-        return(this.x);
-    }
-
-    /**
-    * @return Y coordinate of intersection
-    */
-    public int getIntersectionY() {
-        return(this.y);
-    }
-    /**
-     * print coordinates of intersection (x,y)
-     */
-    public void printIntersection() {
-        System.out.printf("(%d,%d)", this.x, this.y);
-    }
-    
     /**
      * Draws a town (black) or an intersection (red)
      * @param i object number
@@ -89,7 +60,7 @@ public class Intersection {
         String color;
         if(i<numOfTowns) color = "Black";
         else color = "Red";
-        Rectangle town = new Rectangle(this.getIntersectionX(), this.getIntersectionY(), this.bound, this.bound);
+        Rectangle town = new Rectangle(this.getX(), this.getY(), this.bound, this.bound);
         town.setFill(Color.web(color));
         return town;              
     }
@@ -106,7 +77,7 @@ public class Intersection {
     
     public void printNeighbours() {
         for(int i=0; i<this.neighbours.size(); i++) {
-            this.neighbours.get(i).printIntersection();
+            this.neighbours.get(i).print();
         }
     }
     

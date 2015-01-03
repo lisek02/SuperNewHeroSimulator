@@ -11,12 +11,12 @@ package supernewherosimulator;
  */
 public class Place {
     
-    private int locationX;
-    private int locationY;
+    private int x;
+    private int y;
 
     public Place(int locationX, int locationY) {
-        this.locationX = locationX;
-        this.locationY = locationY;
+        this.x = locationX;
+        this.y = locationY;
     }
     
     
@@ -38,29 +38,36 @@ public class Place {
     /**
      * @return the locationX
      */
-    public int getLocationX() {
-        return locationX;
+    public int getX() {
+        return x;
     }
 
     /**
      * @param locationX the locationX to set
      */
     public void setLocationX(int locationX) {
-        this.locationX = locationX;
+        this.x = locationX;
     }
 
     /**
      * @return the locationY
      */
-    public int getLocationY() {
-        return locationY;
+    public int getY() {
+        return y;
     }
 
     /**
      * @param locationY the locationY to set
      */
     public void setLocationY(int locationY) {
-        this.locationY = locationY;
+        this.y = locationY;
+    }
+    
+    /**
+     * print coordinates of intersection (x,y)
+     */
+    public void print() {
+        System.out.printf("(%d,%d)", this.x, this.y);
     }
     
 }

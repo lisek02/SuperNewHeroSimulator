@@ -40,7 +40,7 @@ public class Road {
      */
     public void getRoad() {
         for(int i=0; i<roadSectionsList.size(); i++) {
-            roadSectionsList.get(i).printIntersection();
+            roadSectionsList.get(i).print();
         }
     }
 }
