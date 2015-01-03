@@ -108,6 +108,7 @@ public abstract class Human implements Runnable {
         Rectangle human = new Rectangle(start.getX() - rectangleBound, start.getY() - rectangleBound, 10, 10);
         human.setFill(Color.web("blue"));
         Node character = human;
+        //character.setVisible(false);
         
         characterPath.getElements().add(new MoveTo(start.getX(), start.getY()));
         characterPath.getElements().add(new LineTo(end.getX(), end.getY()));
@@ -127,6 +128,7 @@ public abstract class Human implements Runnable {
             @Override
             public void handle(ActionEvent event) {
                 SuperNewHeroSimulator.paths.getChildren().remove(character);
+                //character.setVisible(true);
             }
         });
     }
@@ -151,11 +153,6 @@ public abstract class Human implements Runnable {
 
             ArrayList<Intersection> path = new ArrayList<>();
             path = SuperNewHeroSimulator.findPath(homeTown, toGo);
-
-//            System.out.println("home town:");
-//            homeTown.printIntersection();
-//            System.out.println("to go:");
-//            toGo.printIntersection();
             
             Place currentHumanPosition = (Place) currentIntersection;
 
@@ -168,26 +165,17 @@ public abstract class Human implements Runnable {
                 startPosition = calculateStartPosition(currentIntersection, endIntersection);
                 endPosition = calculateEndPosition(currentIntersection, endIntersection);
                 
-//                System.out.println("test koordynatów");
-//                System.out.println(startPosition.getLocationX());
-//                System.out.println(startPosition.getLocationY());
-//                System.out.println(endPosition.getLocationX());
-//                System.out.println(endPosition.getLocationX());
-                //Place currentHumanPosition = (Place) currentIntersection;
-                
+                //tu musi być semafor
                 this.moveBetween(currentHumanPosition, startPosition, delay, 0.5);
                 delay += 0.5;
-                
+                //aż dotąd
+               
                 this.moveBetween(startPosition, endPosition, delay, 1.0);
                 delay += 1.0;
                 
                 currentIntersection = path1;
                 startPosition = endPosition;
                 currentHumanPosition = endPosition;
-     
-//                this.setLocationX(path1.getIntersectionX());
-//                this.setLocationY(path1.getIntersectionY());
-
             }            
         } else System.out.println("Brak mieszkańców");
     }    

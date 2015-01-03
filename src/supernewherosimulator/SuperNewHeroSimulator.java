@@ -161,7 +161,7 @@ public class SuperNewHeroSimulator extends Application {
         
         int releaseTheKraken;
         //int townToReleaseFrom;
-        releaseTheKraken = 20000;
+        releaseTheKraken = 200;
         
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
