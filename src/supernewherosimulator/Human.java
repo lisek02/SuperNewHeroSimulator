@@ -14,12 +14,18 @@ import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import static supernewherosimulator.SuperNewHeroSimulator.randInt;
 /**
@@ -111,6 +117,39 @@ public abstract class Human implements Runnable {
         Rectangle human = new Rectangle(start.getX() - rectangleBound, start.getY() - rectangleBound, 10, 10);
         human.setFill(Color.web("blue"));
         Node character = human;
+        
+        Label characterInfo = this.getCharacterInfo();
+        
+        character.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                Stage stage = new Stage();
+                stage.setHeight(200);
+                stage.setWidth(300);
+                stage.setTitle("Character details");
+                
+                Group detailsRoot = new Group();
+                Scene scene = new Scene(detailsRoot, 300, 200);
+                stage.setScene(scene);
+                
+                detailsRoot.getChildren().add(characterInfo);
+                
+                Button stop = new Button();
+                stop.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent buttonEvent) {
+                        //something
+                    }
+                });
+                
+                detailsRoot.getChildren().add(stop);
+                
+                stage.show();
+//                SuperNewHeroSimulator.characterLabels.getChildren().clear();
+//                SuperNewHeroSimulator.characterLabels.getChildren().add(characterInfo);
+                
+            }
+        });
+        
+        
         //character.setVisible(false);
         
         characterPath.getElements().add(new MoveTo(start.getX(), start.getY()));
@@ -194,6 +233,13 @@ public abstract class Human implements Runnable {
             }            
         } else System.out.println("Brak mieszkańców");
     }    
+    
+    public Label getCharacterInfo() {
+        Label details = new Label();
+        details.setWrapText(true);
+        details.setText("name:" + this.name);
+        return details;
+    }
     
     /**
      * @return the name

@@ -59,6 +59,8 @@ public class SuperNewHeroSimulator extends Application {
     
     public static Group characters;
     public static Group paths;
+    
+    public static Group characterLabels;
        
     @Override
     public void start(Stage primaryStage) {
@@ -113,20 +115,28 @@ public class SuperNewHeroSimulator extends Application {
             
         }
         root.getChildren().add(planets);
+
+
         
         //generating a character group
         characters = new Group();
         root.getChildren().add(characters);
+        
+        characterLabels = new Group();
+        characters.getChildren().add(characterLabels);
         
         //seting up a path
         paths = new Group();
         paths.setAutoSizeChildren(true);
         root.getChildren().add(paths);
         
+        //characters label group
+
+
         
         int releaseTheKraken;
         //int townToReleaseFrom;
-        releaseTheKraken = 200;
+        releaseTheKraken = 20000;
         
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
