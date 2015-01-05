@@ -57,6 +57,8 @@ public class SuperNewHeroSimulator extends Application {
     public static Intersection[] inter = new Intersection[numOfInters];
     public static Planet[] planet = new Planet[numOfTowns];
     
+    public static Group root;
+    
     public static Group characters;
     public static Group paths;
     
@@ -66,7 +68,7 @@ public class SuperNewHeroSimulator extends Application {
     public void start(Stage primaryStage) {
       
         //StackPane root = new StackPane();
-        Group root = new Group();
+        root = new Group();
         root.setId("root");
        
         Scene scene = new Scene(root, 1200, 800);
@@ -88,7 +90,8 @@ public class SuperNewHeroSimulator extends Application {
         planets.getChildren().add(planetsLabels);
 
         for(i=0; i<numOfInters; i++) {
-            planetNode[i] = inter[i].drawIntersection(i, numOfTowns);
+            inter[i].setInterRectangle(i, numOfTowns);
+            planetNode[i] = inter[i].getInterRectangle();
             planets.getChildren().add(planetNode[i]);
             
             planetNode[i].setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -115,9 +118,7 @@ public class SuperNewHeroSimulator extends Application {
             
         }
         root.getChildren().add(planets);
-
-
-        
+     
         //generating a character group
         characters = new Group();
         root.getChildren().add(characters);
@@ -127,16 +128,19 @@ public class SuperNewHeroSimulator extends Application {
         
         //seting up a path
         paths = new Group();
-        paths.setAutoSizeChildren(true);
+        root.getLocalToSceneTransform();
+        //paths.setAutoSizeChildren(true);
         root.getChildren().add(paths);
+        paths.getLocalToSceneTransform();
         
+
         //characters label group
 
 
         
         int releaseTheKraken;
         //int townToReleaseFrom;
-        releaseTheKraken = 20000;
+        releaseTheKraken = 2000;
         
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -147,7 +151,7 @@ public class SuperNewHeroSimulator extends Application {
                        System.out.println(townToReleaseFrom);
                        Civilian cywil = new Civilian("cywil" + randInt(1, 1000), i, inter[townToReleaseFrom].getX(), inter[townToReleaseFrom].getY(), inter[townToReleaseFrom]);  
                        Thread thread = new Thread(cywil);
-                       Platform.runLater(thread);                
+                       //             
             }       
         }, 0, releaseTheKraken);
        
@@ -194,6 +198,22 @@ public class SuperNewHeroSimulator extends Application {
         launch(args);
     }
 
+    
+//    public static void checkCollision(Node character) {
+//        boolean collision = false;
+//        for(Intersection inter : SuperNewHeroSimulator.inter) {
+//            //Shape intersect = Shape.intersect(character, inter.getInterRectangle());
+//            if(character.getBoundsInParent().intersects(inter.getInterRectangle().getBoundsInParent())) {
+//                collision = true;
+//            }
+//        }
+//        if(collision) {
+//            character.Color.YELLOW);
+//        }
+//    }
+//    
+    
+    
     private void generatePlanet(Planet[] planet) {    
 
 //    public enum planetNames {

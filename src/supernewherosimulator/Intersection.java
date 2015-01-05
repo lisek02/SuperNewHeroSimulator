@@ -24,6 +24,7 @@ import static supernewherosimulator.SuperNewHeroSimulator.numOfInters;
 public class Intersection extends Place {
     private ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
     private int bound = 20;
+    private Rectangle interRectangle;
     
     public Semaphore sem;
     
@@ -104,6 +105,24 @@ public class Intersection extends Place {
      */
     public void lowerSemaphore() {
         
+    }
+
+    /**
+     * @return the interRectangle
+     */
+    public Rectangle getInterRectangle() {
+        return interRectangle;
+    }
+
+    /**
+     * 
+     */
+    public void setInterRectangle(int i, int numOfTowns) {
+        String color;
+        if(i<numOfTowns) color = "Black";
+        else color = "Red";
+        this.interRectangle = new Rectangle(this.getX(), this.getY(), this.bound, this.bound);
+        this.interRectangle.setFill(Color.web(color));        
     }
     
 }

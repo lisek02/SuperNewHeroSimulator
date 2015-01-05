@@ -10,8 +10,16 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -25,8 +33,10 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import static supernewherosimulator.SuperNewHeroSimulator.paths;
 import static supernewherosimulator.SuperNewHeroSimulator.randInt;
 /**
  *
@@ -40,13 +50,15 @@ public abstract class Human implements Runnable {
     private int locationY;
     private Intersection familyTown;
     private Intersection currentPosition;
+    private Rectangle character;
     
-    Human(String name, int id, int locationX, int locationY, Intersection familyTown) {
+    public Human(String name, int id, int locationX, int locationY, Intersection familyTown) {
         this.setName(name);
         this.setId(id);
         this.setLocationX(locationX);
         this.setLocationY(locationY);
         this.familyTown = familyTown;
+        Platform.runLater(this);
     }
     
     public Place calculateStartPosition(Intersection currentIntersection, Intersection endIntersection) {
@@ -176,15 +188,23 @@ public abstract class Human implements Runnable {
     }
     
     public void run() {
+        //Initialization
         Planet homeTown = (Planet)this.getFamilyTown();
         Planet toGo;
         double delay = 0.0;
-        
-        //Intersection currentIntersection = new Intersection(this.familyTown.getX(), this.familyTown.getY(), new Semaphore(1, false));
+
         Intersection currentIntersection = this.familyTown;
         Intersection endIntersection;
         Place startPosition, endPosition;
         
+        //drawing a character
+        int rectangleBound = 5;        
+        Rectangle human = new Rectangle(this.getLocationX() - rectangleBound, this.getLocationY() - rectangleBound, 10, 10);
+        human.setFill(Color.web("blue"));
+        Node character = human;
+        SuperNewHeroSimulator.paths.getChildren().add(character);
+             
+        //calculating a path
         if(homeTown.getPopulation() != 0) {
             homeTown.decreasePopulation();
             
@@ -200,39 +220,101 @@ public abstract class Human implements Runnable {
             Place currentHumanPosition = (Place) currentIntersection;
 
             path.remove(0);
-            for (Intersection path1 : path) {
-                path1.print();
+            
+            SequentialTransition seqTransition = new SequentialTransition(character);
+
+            final Duration sec15 = Duration.millis(3000);
+            final Duration sec30 = Duration.millis(1500);          
+
+           //adding path sections to sequential trasition
+            for(Intersection path1 : path) {             
                 
-                endIntersection = path1;
+                startPosition = calculateStartPosition(currentIntersection, path1);
+                endPosition = calculateEndPosition(currentIntersection, path1); 
+               
+                TranslateTransition chTrans1 = new TranslateTransition(sec15);
+                chTrans1.setByX(startPosition.getX() - currentHumanPosition.getX());
+                chTrans1.setByY(startPosition.getY() - currentHumanPosition.getY());
                 
-                startPosition = calculateStartPosition(currentIntersection, endIntersection);
-                endPosition = calculateEndPosition(currentIntersection, endIntersection);
+                TranslateTransition chTrans2 = new TranslateTransition(sec30);
+                chTrans2.setByX(endPosition.getX() - startPosition.getX());
+                chTrans2.setByY(endPosition.getY() - startPosition.getY());
                 
-                try {
-                    currentIntersection.sem.acquire();
-                } catch(InterruptedException e) {
-                    System.out.println("exception");
-                }
-//                System.out.println("id: " + this.getId());
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-                this.moveBetween(currentHumanPosition, startPosition, delay, 5.5);
-                delay += 5.5;
+                seqTransition.getChildren().add(chTrans1);
+                seqTransition.getChildren().add(chTrans2);
                 
-                currentIntersection.sem.release();
+
+//                final KeyFrame frame = new KeyFrame(delay, "check",)
                 
-                this.moveBetween(startPosition, endPosition, delay, 3.0);
-                delay += 3.0;
+//                currentHumanPosition -> startPosition
+//                startPosition -> endPosition
                 
                 currentIntersection = path1;
-                startPosition = endPosition;
                 currentHumanPosition = endPosition;
-            }            
+            }
+            //if position == intersection, check if free to go, wait or go
+            
+            seqTransition.setInterpolator(Interpolator.LINEAR);
+            System.out.println("Cue points:" + seqTransition.getCuePoints());
+            seqTransition.play();
+
+            ObservableBooleanValue colliding;
+            for(Intersection inter : SuperNewHeroSimulator.inter) {        
+                colliding = Bindings.createBooleanBinding(new Callable<Boolean>() {
+
+                    @Override
+                    public Boolean call() throws Exception {
+                        return character.getBoundsInParent().intersects(inter.getInterRectangle().getBoundsInParent());
+                    }
+                }, character.boundsInParentProperty(), inter.getInterRectangle().boundsInParentProperty());
+                
+                colliding.addListener(new ChangeListener<Boolean>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                        if(newValue) {
+                            //try {
+                                //seqTransition.stop();
+                                //inter.sem.acquire();
+                                //seqTransition.play();
+                                inter.getInterRectangle().setFill(Color.YELLOW);
+                            //} catch (InterruptedException ex) {
+                               // Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
+                            //}
+                        } else {
+                            //inter.sem.release();
+                            //seqTransition.play();
+                            inter.getInterRectangle().setFill(Color.RED);
+                        }
+                    }
+                });  
+            }    
+            
+            //SuperNewHeroSimulator.checkCollision(character);
+            
+   
+//            try {
+//                currentIntersection.sem.acquire();
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            
+//            currentIntersection.sem.release();
+
         } else System.out.println("Brak mieszkańców");
     }    
+    
+//    private void checkCollision() {
+//        boolean collision = false;
+//        for(Intersection inter : SuperNewHeroSimulator.inter) {
+//            //Shape intersect = Shape.intersect(character, inter.getInterRectangle());
+//            if(character.getBoundsInParent().intersects(inter.getInterRectangle().getBoundsInParent())) {
+//                collision = true;
+//            }
+//        }
+//        if(collision) {
+//            character.setFill(Color.YELLOW);
+//        }
+//    }
     
     public Label getCharacterInfo() {
         Label details = new Label();
