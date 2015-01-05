@@ -63,6 +63,8 @@ public class SuperNewHeroSimulator extends Application {
     public static Group paths;
     
     public static Group characterLabels;
+    
+    public static Scene scene;
        
     @Override
     public void start(Stage primaryStage) {
@@ -71,7 +73,7 @@ public class SuperNewHeroSimulator extends Application {
         root = new Group();
         root.setId("root");
        
-        Scene scene = new Scene(root, 1200, 800);
+        scene = new Scene(root, 1200, 800);
         scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         
         primaryStage.setTitle("Super New Hero Simulator");
@@ -138,22 +140,34 @@ public class SuperNewHeroSimulator extends Application {
 
 
         
-        int releaseTheKraken;
-        //int townToReleaseFrom;
-        releaseTheKraken = 2000;
+        int releaseTheCivil = 2000;
+        int releaseTheVillain = 2000;
         
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        Timer timerCivil = new Timer();
+        timerCivil.scheduleAtFixedRate(new TimerTask() {
             
             @Override
             public void run() {
                        int townToReleaseFrom = randInt(0, numOfTowns-1);
-                       System.out.println(townToReleaseFrom);
+                       //System.out.println(townToReleaseFrom);
                        Civilian cywil = new Civilian("cywil" + randInt(1, 1000), i, inter[townToReleaseFrom].getX(), inter[townToReleaseFrom].getY(), inter[townToReleaseFrom]);  
-                       Thread thread = new Thread(cywil);
-                       //             
+                       Thread thread = new Thread(cywil);          
             }       
-        }, 0, releaseTheKraken);
+        }, 0, releaseTheCivil);
+        
+        Timer timerVillain = new Timer();
+        timerVillain = new Timer();
+        timerVillain.scheduleAtFixedRate(new TimerTask() {
+            
+            @Override
+            public void run() {
+                        Place placeToSpawn = new Place(0,0);
+                        placeToSpawn.randomEdge();
+                        Villain vill = new Villain("villain" + randInt(1, 1000), randInt(1, 1000), placeToSpawn.getX(), placeToSpawn.getY(), inter[2]);
+                        Thread threadV = new Thread(vill);
+            }
+        }, 0, releaseTheVillain);
+        
        
         
 

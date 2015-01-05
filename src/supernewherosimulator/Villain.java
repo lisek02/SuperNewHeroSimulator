@@ -15,7 +15,9 @@ public class Villain extends Hero {
         super(name, id, locationX, locationY, familyTown);
     }
 
-
+    public void run() {
+        //super.run();
+    }
     
     /**
      *

@@ -19,7 +19,27 @@ public class Place {
         this.y = locationY;
     }
     
-    
+    public void randomEdge() {
+        int edge = SuperNewHeroSimulator.randInt(1,4);
+        int randY = SuperNewHeroSimulator.randInt(0, (int) SuperNewHeroSimulator.scene.getHeight());
+        int randX = SuperNewHeroSimulator.randInt(0, (int) SuperNewHeroSimulator.scene.getWidth());
+        switch(edge) {
+            case 1: this.x = 0;
+                    this.y = randY;
+                    break;
+            case 2: this.x = (int) SuperNewHeroSimulator.scene.getWidth();
+                    this.y = randY;
+                    break;
+            case 3: this.x = randX;
+                    this.y = 0;
+                    break;
+            case 4: this.x = randX;
+                    this.y = (int) SuperNewHeroSimulator.scene.getHeight();
+                    break;
+        }
+                
+         
+    }
     
     /**
      *

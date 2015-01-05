@@ -48,9 +48,10 @@ public abstract class Human implements Runnable {
     private int id;
     private int locationX;
     private int locationY;
-    private Intersection familyTown;
-    private Intersection currentPosition;
-    private Rectangle character;
+    private int bound = 5;
+    protected Intersection familyTown;
+    protected Intersection currentPosition;
+    protected Rectangle character;
     
     public Human(String name, int id, int locationX, int locationY, Intersection familyTown) {
         this.setName(name);
@@ -59,6 +60,7 @@ public abstract class Human implements Runnable {
         this.setLocationY(locationY);
         this.familyTown = familyTown;
         Platform.runLater(this);
+        this.setCharacterRectangle();
     }
     
     public Place calculateStartPosition(Intersection currentIntersection, Intersection endIntersection) {
@@ -120,202 +122,71 @@ public abstract class Human implements Runnable {
         
         return(new Place(resX,resY));
     }
-
-    public void moveBetween(Place start, Place end, double delay, double time) {
-        Path characterPath = new Path();
-        
-        int rectangleBound = 5;
-        
-        Rectangle human = new Rectangle(start.getX() - rectangleBound, start.getY() - rectangleBound, 10, 10);
-        human.setFill(Color.web("blue"));
-        Node character = human;
-        
-        Label characterInfo = this.getCharacterInfo();
-        
-        character.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                Stage stage = new Stage();
-                stage.setHeight(200);
-                stage.setWidth(300);
-                stage.setTitle("Character details");
-                
-                Group detailsRoot = new Group();
-                Scene scene = new Scene(detailsRoot, 300, 200);
-                stage.setScene(scene);
-                
-                detailsRoot.getChildren().add(characterInfo);
-                
-                Button stop = new Button();
-                stop.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent buttonEvent) {
-                        //something
-                    }
-                });
-                
-                detailsRoot.getChildren().add(stop);
-                
-                stage.show();
-//                SuperNewHeroSimulator.characterLabels.getChildren().clear();
-//                SuperNewHeroSimulator.characterLabels.getChildren().add(characterInfo);
-                
-            }
-        });
-        
-        
-        //character.setVisible(false);
-        
-        characterPath.getElements().add(new MoveTo(start.getX(), start.getY()));
-        characterPath.getElements().add(new LineTo(end.getX(), end.getY()));
-        
-        SuperNewHeroSimulator.paths.getChildren().add(character);
-        SuperNewHeroSimulator.paths.getChildren().add(characterPath);
-        
-        final PathTransition characterTransition = new PathTransition();
-        
-        characterTransition.setDuration(Duration.seconds(time));
-        characterTransition.setPath(characterPath);
-        characterTransition.setNode(character);
-        characterTransition.setDelay(Duration.seconds(delay));
-        characterTransition.play(); 
-        characterTransition.setOnFinished(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                SuperNewHeroSimulator.paths.getChildren().remove(character);
-
-            }
-        });
-    }
     
-    public void run() {
+    public void moveBetween(Intersection currentIntersection, Intersection finalIntersection) {
         //Initialization
-        Planet homeTown = (Planet)this.getFamilyTown();
-        Planet toGo;
-        double delay = 0.0;
+        
+        //Planet homeTown = (Planet)this.getFamilyTown();
+        //Planet toGo;
+        
+//        int toGoId;
+//        do {
+//            toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
+//            toGo = (Planet) SuperNewHeroSimulator.inter[toGoId];
+//        } while (toGo == homeTown);
 
-        Intersection currentIntersection = this.familyTown;
-        Intersection endIntersection;
+//        Intersection currentIntersection = this.familyTown; 
+        
+        
         Place startPosition, endPosition;
         
         //drawing a character
-        int rectangleBound = 5;        
-        Rectangle human = new Rectangle(this.getLocationX() - rectangleBound, this.getLocationY() - rectangleBound, 10, 10);
-        human.setFill(Color.web("blue"));
-        Node character = human;
+//        int rectangleBound = 5;        
+//        Rectangle human = new Rectangle(this.getLocationX() - rectangleBound, this.getLocationY() - rectangleBound, 10, 10);
+//        human.setFill(Color.web("blue"));
+        
+        Node character = this.character;
         SuperNewHeroSimulator.paths.getChildren().add(character);
              
         //calculating a path
-        if(homeTown.getPopulation() != 0) {
-            homeTown.decreasePopulation();
-            
-            int toGoId;
-            do {
-                toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
-                toGo = (Planet) SuperNewHeroSimulator.inter[toGoId];
-            } while (toGo == homeTown);
+        ArrayList<Intersection> path = new ArrayList<>();
+        path = SuperNewHeroSimulator.findPath(currentIntersection, finalIntersection);
 
-            ArrayList<Intersection> path = new ArrayList<>();
-            path = SuperNewHeroSimulator.findPath(homeTown, toGo);
-            
-            Place currentHumanPosition = (Place) currentIntersection;
+        Place currentHumanPosition = (Place) currentIntersection;
+        path.remove(0);
 
-            path.remove(0);
-            
-            SequentialTransition seqTransition = new SequentialTransition(character);
+        SequentialTransition seqTransition = new SequentialTransition(character);
 
-            final Duration sec15 = Duration.millis(3000);
-            final Duration sec30 = Duration.millis(1500);          
+        final Duration sec15 = Duration.millis(3000);
+        final Duration sec30 = Duration.millis(1500);          
 
-           //adding path sections to sequential trasition
-            for(Intersection path1 : path) {             
-                
-                startPosition = calculateStartPosition(currentIntersection, path1);
-                endPosition = calculateEndPosition(currentIntersection, path1); 
-               
-                TranslateTransition chTrans1 = new TranslateTransition(sec15);
-                chTrans1.setByX(startPosition.getX() - currentHumanPosition.getX());
-                chTrans1.setByY(startPosition.getY() - currentHumanPosition.getY());
-                
-                TranslateTransition chTrans2 = new TranslateTransition(sec30);
-                chTrans2.setByX(endPosition.getX() - startPosition.getX());
-                chTrans2.setByY(endPosition.getY() - startPosition.getY());
-                
-                seqTransition.getChildren().add(chTrans1);
-                seqTransition.getChildren().add(chTrans2);
-                
+       //adding path sections to sequential trasition
+        for(Intersection path1 : path) {             
 
-//                final KeyFrame frame = new KeyFrame(delay, "check",)
-                
-//                currentHumanPosition -> startPosition
-//                startPosition -> endPosition
-                
-                currentIntersection = path1;
-                currentHumanPosition = endPosition;
-            }
-            //if position == intersection, check if free to go, wait or go
-            
-            seqTransition.setInterpolator(Interpolator.LINEAR);
-            System.out.println("Cue points:" + seqTransition.getCuePoints());
-            seqTransition.play();
+            startPosition = calculateStartPosition(currentIntersection, path1);
+            endPosition = calculateEndPosition(currentIntersection, path1); 
 
-            ObservableBooleanValue colliding;
-            for(Intersection inter : SuperNewHeroSimulator.inter) {        
-                colliding = Bindings.createBooleanBinding(new Callable<Boolean>() {
+            TranslateTransition chTrans1 = new TranslateTransition(sec15);
+            chTrans1.setByX(startPosition.getX() - currentHumanPosition.getX());
+            chTrans1.setByY(startPosition.getY() - currentHumanPosition.getY());
 
-                    @Override
-                    public Boolean call() throws Exception {
-                        return character.getBoundsInParent().intersects(inter.getInterRectangle().getBoundsInParent());
-                    }
-                }, character.boundsInParentProperty(), inter.getInterRectangle().boundsInParentProperty());
-                
-                colliding.addListener(new ChangeListener<Boolean>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                        if(newValue) {
-                            //try {
-                                //seqTransition.stop();
-                                //inter.sem.acquire();
-                                //seqTransition.play();
-                                inter.getInterRectangle().setFill(Color.YELLOW);
-                            //} catch (InterruptedException ex) {
-                               // Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
-                            //}
-                        } else {
-                            //inter.sem.release();
-                            //seqTransition.play();
-                            inter.getInterRectangle().setFill(Color.RED);
-                        }
-                    }
-                });  
-            }    
-            
-            //SuperNewHeroSimulator.checkCollision(character);
-            
-   
-//            try {
-//                currentIntersection.sem.acquire();
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            
-//            currentIntersection.sem.release();
+            TranslateTransition chTrans2 = new TranslateTransition(sec30);
+            chTrans2.setByX(endPosition.getX() - startPosition.getX());
+            chTrans2.setByY(endPosition.getY() - startPosition.getY());
 
-        } else System.out.println("Brak mieszkańców");
-    }    
-    
-//    private void checkCollision() {
-//        boolean collision = false;
-//        for(Intersection inter : SuperNewHeroSimulator.inter) {
-//            //Shape intersect = Shape.intersect(character, inter.getInterRectangle());
-//            if(character.getBoundsInParent().intersects(inter.getInterRectangle().getBoundsInParent())) {
-//                collision = true;
-//            }
-//        }
-//        if(collision) {
-//            character.setFill(Color.YELLOW);
-//        }
-//    }
-    
+            seqTransition.getChildren().add(chTrans1);
+            seqTransition.getChildren().add(chTrans2);
+
+            currentIntersection = path1;
+            currentHumanPosition = endPosition;
+        }
+        //if position == intersection, check if free to go, wait or go
+
+        seqTransition.setInterpolator(Interpolator.LINEAR);
+        System.out.println("Cue points:" + seqTransition.getCuePoints());
+        seqTransition.play();
+    }          
+        
     public Label getCharacterInfo() {
         Label details = new Label();
         details.setWrapText(true);
@@ -401,5 +272,10 @@ public abstract class Human implements Runnable {
         Rectangle human = new Rectangle(this.locationX, this.locationY, 10, 10);
         human.setFill(Color.web("blue"));
         return human;
+    }
+    
+    public void setCharacterRectangle() {
+        this.character = new Rectangle(this.familyTown.getX() - this.bound, this.familyTown.getY() - this.bound, 10, 10);
+        this.character.setFill(Color.BLUE);
     }
 }
