@@ -163,7 +163,7 @@ public class SuperNewHeroSimulator extends Application {
             public void run() {
                         Place placeToSpawn = new Place(0,0);
                         placeToSpawn.randomEdge();
-                        Villain vill = new Villain("villain" + randInt(1, 1000), randInt(1, 1000), placeToSpawn.getX(), placeToSpawn.getY(), inter[2]);
+                        Villain vill = new Villain("villain" + randInt(1, 1000), randInt(1, 1000), placeToSpawn.getX(), placeToSpawn.getY(), new Intersection(placeToSpawn.getX(), placeToSpawn.getY(), new Semaphore(1)));
                         Thread threadV = new Thread(vill);
             }
         }, 0, releaseTheVillain);
@@ -343,7 +343,7 @@ public class SuperNewHeroSimulator extends Application {
      * @param end final intersection
      * @return 
      */
-    private static Intersection find_lowest_f(ArrayList<Intersection> openset, Intersection end) {
+    public static Intersection find_lowest_f(ArrayList<Intersection> openset, Intersection end) {
         double lowest_cost = heuristic_cost_estimate(openset.get(0), end);
         Intersection lowest = openset.get(0);
         
