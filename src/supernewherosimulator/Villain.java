@@ -28,8 +28,9 @@ public class Villain extends Hero {
     }
 
     public void run() {
+        super.run();
         this.moveToClosestTown();
-        //decrease potential
+        //this.familyTown
         //choose new city
         //go to new city (meanwhile check collision
         //decrease potential
@@ -38,8 +39,9 @@ public class Villain extends Hero {
     
     public void moveToClosestTown() {
         Intersection start = SuperNewHeroSimulator.find_lowest_f(new ArrayList<Intersection>(Arrays.asList(SuperNewHeroSimulator.inter)), this.getFamilyTown());
-        System.out.println("Villain: " + start.getX() + " " + start.getY());
+        //System.out.println("Villain: " + start.getX() + " " + start.getY());
         
+        Villain tmp = this;
         Node character = this.character;
         SuperNewHeroSimulator.paths.getChildren().add(character);
         
@@ -47,14 +49,17 @@ public class Villain extends Hero {
         transTransition.setByX(start.getX() - this.getFamilyTown().getX());
         transTransition.setByY(start.getY() - this.getFamilyTown().getY());
         transTransition.play();
-//        transTransition.setOnFinished(new EventHandler<ActionEvent>() {
-//
-//            @Override
-//            public void handle(ActionEvent event) {
-//                Villain villain = (Villain) event.getSource();
-//                villain.setFamilyTown(start);
-//            }
-//        });
+        //System.out.println("Node property: " + transTransition.nodeProperty().getValue());
+        //transTransition.nodeProperty();
+        transTransition.onFinishedProperty();
+        transTransition.setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                tmp.setFamilyTown(start);
+                System.out.println("Family town: " + tmp.familyTown);
+            }
+        });
     }
     /**
      *

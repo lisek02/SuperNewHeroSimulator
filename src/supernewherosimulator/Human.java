@@ -59,8 +59,12 @@ public abstract class Human implements Runnable {
         this.setLocationX(locationX);
         this.setLocationY(locationY);
         this.familyTown = familyTown;
-        Platform.runLater(this);
         this.setCharacterRectangle();
+        Platform.runLater(this);
+    }
+    
+    public void run() {
+        this.displayCharacterInfo();
     }
     
     public Place calculateStartPosition(Intersection currentIntersection, Intersection endIntersection) {
@@ -226,7 +230,40 @@ public abstract class Human implements Runnable {
         }
         //return colliding.get();
     }
-        
+    
+    public void displayCharacterInfo() {
+        Label characterInfo = this.getCharacterInfo();
+         
+        character.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                Stage stage = new Stage();
+                stage.setHeight(200);
+                stage.setWidth(300);
+                stage.setTitle("Character details");
+
+                Group detailsRoot = new Group();
+                Scene scene = new Scene(detailsRoot, 300, 200);
+                stage.setScene(scene);
+
+                detailsRoot.getChildren().add(characterInfo);
+
+//                Button stop = new Button();
+//                stop.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                    public void handle(MouseEvent buttonEvent) {
+//                        //something
+//                    }
+//                });
+
+//                detailsRoot.getChildren().add(stop);
+
+                stage.show();
+//                SuperNewHeroSimulator.characterLabels.getChildren().clear();
+//                SuperNewHeroSimulator.characterLabels.getChildren().add(characterInfo);
+
+            }
+        });
+       }
+    
     public Label getCharacterInfo() {
         Label details = new Label();
         details.setWrapText(true);

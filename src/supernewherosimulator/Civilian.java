@@ -24,6 +24,7 @@ public class Civilian extends Human {
     }
     
     public void run() {
+        super.run();
         //Initialization
         Planet homeTown = (Planet)this.getFamilyTown();
         Planet toGo;

@@ -26,7 +26,7 @@ public class Hero extends Human {
 
     
     public void run() {
-        super.run();
+        //super.run();
     }
     
     /**
