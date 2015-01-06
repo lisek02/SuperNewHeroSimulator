@@ -45,39 +45,8 @@ public class Civilian extends Human {
             this.moveBetween(currentIntersection, endIntersection);
 
             //collision detection
-            //this.checkCollision(Node first, Node second);
-            
-            ObservableBooleanValue colliding;
-            for(Intersection inter : SuperNewHeroSimulator.inter) {        
-                colliding = Bindings.createBooleanBinding(new Callable<Boolean>() {
-
-                    @Override
-                    public Boolean call() throws Exception {
-                        return character.getBoundsInParent().intersects(inter.getInterRectangle().getBoundsInParent());
-                    }
-                }, character.boundsInParentProperty(), inter.getInterRectangle().boundsInParentProperty());
-
-                colliding.addListener(new ChangeListener<Boolean>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                        if(newValue) {
-                            //try {
-                                //seqTransition.stop();
-                                //inter.sem.acquire();
-                                //seqTransition.play();
-                                inter.getInterRectangle().setFill(Color.YELLOW);
-                            //} catch (InterruptedException ex) {
-                               // Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
-                            //}
-                        } else {
-                            //inter.sem.release();
-                            //seqTransition.play();
-                            inter.getInterRectangle().setFill(Color.RED);
-                        }
-                    }
-                });  
-            }    
-        } else System.out.println("Brak mieszkańców");
+            this.checkCollision(character, SuperNewHeroSimulator.inter);
+        }
     }
     
     /**

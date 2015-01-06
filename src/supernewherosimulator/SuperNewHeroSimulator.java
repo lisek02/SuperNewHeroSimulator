@@ -159,7 +159,7 @@ public class SuperNewHeroSimulator extends Application {
         timerVillain = new Timer();
         timerVillain.scheduleAtFixedRate(new TimerTask() {
             
-            @Override
+            @Override   
             public void run() {
                         Place placeToSpawn = new Place(0,0);
                         placeToSpawn.randomEdge();

@@ -185,7 +185,47 @@ public abstract class Human implements Runnable {
         seqTransition.setInterpolator(Interpolator.LINEAR);
         System.out.println("Cue points:" + seqTransition.getCuePoints());
         seqTransition.play();
-    }          
+    }     
+    
+    public void checkCollision(Node first, Intersection[] second) {
+        ObservableBooleanValue colliding;
+        
+        for(Intersection inter : second) {
+            colliding = Bindings.createBooleanBinding(new Callable<Boolean>() {
+
+                @Override
+                public Boolean call() throws Exception {
+                    return first.getBoundsInParent().intersects(inter.getInterRectangle().getBoundsInParent());
+                }
+            }, first.boundsInParentProperty(), inter.getInterRectangle().boundsInParentProperty());
+
+            colliding.addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if(newValue) {
+                        inter.getInterRectangle().setFill(Color.YELLOW);
+                        //collides = true;
+
+                        //try {
+                            //seqTransition.stop();
+                            //inter.sem.acquire();
+                            //seqTransition.play();
+                            //inter.getInterRectangle().setFill(Color.YELLOW);
+                        //} catch (InterruptedException ex) {
+                           // Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
+                        //}
+                    } else {
+                        inter.getInterRectangle().setFill(Color.RED);
+                        //second.setVisible(true);
+                        //inter.sem.release();
+                        //seqTransition.play();
+                        //inter.getInterRectangle().setFill(Color.RED);
+                    }
+                }
+            });
+        }
+        //return colliding.get();
+    }
         
     public Label getCharacterInfo() {
         Label details = new Label();
