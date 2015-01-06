@@ -16,12 +16,13 @@ public class Planet extends Intersection {
     
     private String name;
     private int population;
-    private int powerSourcesTypes[] = new int[6];
+    private PowerSource powerSource;
 
     public Planet(int x, int y, Semaphore sem, String name, int population) {
         super(x, y, sem);
         this.name = name;
         this.population = population;
+        this.powerSource = new PowerSource();
     }
     
     public Label showIntersectionDetails() {
@@ -29,7 +30,8 @@ public class Planet extends Intersection {
         details.setWrapText(true);
         details.setText("(" + this.getX() + " " + this.getY() + ")\n" +
                         "Name: " + this.getName() + "\n" +
-                        "Population: " + this.getPopulation() + "\n"
+                        "Population: " + this.getPopulation() + "\n" +
+                        "Power source: " + this.powerSource.getPotential()
                         );
         super.showIntersectionDetails();
         return details;

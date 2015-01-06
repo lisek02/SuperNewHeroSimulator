@@ -7,6 +7,7 @@ package supernewherosimulator;
 
 import static java.lang.Math.sqrt;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
@@ -47,24 +48,23 @@ import javafx.util.Duration;
  * @author Lisek
  */
 public class SuperNewHeroSimulator extends Application {
-    
-    private Timeline timeline;
-    private AnimationTimer timer;
-    private Integer frame = 0;
-
     public static int numOfInters = 19, numOfTowns = 11, numofIntersections = numOfInters - numOfTowns;
     int i;
     public static Intersection[] inter = new Intersection[numOfInters];
     public static Planet[] planet = new Planet[numOfTowns];
     
-    public static Group root;
-    
+    public static Group root;    
     public static Group characters;
-    public static Group paths;
-    
-    public static Group characterLabels;
-    
+    public static Group paths;    
+    public static Group characterLabels;    
     public static Scene scene;
+    
+    public static int maxNumOfCivil = 1000;
+    //minimal and maximal number of civilians in a town
+    int minPopul = (int) (maxNumOfCivil * 0.3);
+    int maxPopul = maxNumOfCivil;
+    
+    public static ArrayList<Integer> powerSourceTypes;
        
     @Override
     public void start(Stage primaryStage) {
@@ -232,20 +232,20 @@ public class SuperNewHeroSimulator extends Application {
 
 //    public enum planetNames {
 //        Aquarion, Aerilol, Canceron, Gemenon, Caprica, Leonis, Libran, Picon, Sagittaron, Tauron, Virgon
-//    }        
-        int min = 10;
-        int max = 30;
-        planet[0] = new Planet(500,50,new Semaphore(1, false),"Aquarion", randInt(min, max));
-        planet[1] = new Planet(275,150,new Semaphore(1, false),"Leonis", randInt(min, max));
-        planet[2] = new Planet(725,150,new Semaphore(1, false),"Picon", randInt(min, max));
-        planet[3] = new Planet(50,250,new Semaphore(1, false),"Gemenon", randInt(min, max));
-        planet[4] = new Planet(950,250,new Semaphore(1, false),"Virgon", randInt(min, max));
-        planet[5] = new Planet(500,350,new Semaphore(1, false),"Caprica", randInt(min, max));
-        planet[6] = new Planet(50,450,new Semaphore(1, false),"Aerilon", randInt(min, max));
-        planet[7] = new Planet(950,450,new Semaphore(1, false),"Libran", randInt(min, max));
-        planet[8] = new Planet(275,550,new Semaphore(1, false),"Canceron", randInt(min, max));
-        planet[9] = new Planet(725,550,new Semaphore(1, false),"Tauron", randInt(min, max));
-        planet[10] = new Planet(500,650,new Semaphore(1, false),"Sagittarion", randInt(min, max));     
+//    }
+        generateTypes(6, numOfTowns);
+        
+        planet[0] = new Planet(500,50,new Semaphore(1, false),"Aquarion", randInt(minPopul, maxPopul));
+        planet[1] = new Planet(275,150,new Semaphore(1, false),"Leonis", randInt(minPopul, maxPopul));
+        planet[2] = new Planet(725,150,new Semaphore(1, false),"Picon", randInt(minPopul, maxPopul));
+        planet[3] = new Planet(50,250,new Semaphore(1, false),"Gemenon", randInt(minPopul, maxPopul));
+        planet[4] = new Planet(950,250,new Semaphore(1, false),"Virgon", randInt(minPopul, maxPopul));
+        planet[5] = new Planet(500,350,new Semaphore(1, false),"Caprica", randInt(minPopul, maxPopul));
+        planet[6] = new Planet(50,450,new Semaphore(1, false),"Aerilon", randInt(minPopul, maxPopul));
+        planet[7] = new Planet(950,450,new Semaphore(1, false),"Libran", randInt(minPopul, maxPopul));
+        planet[8] = new Planet(275,550,new Semaphore(1, false),"Canceron", randInt(minPopul, maxPopul));
+        planet[9] = new Planet(725,550,new Semaphore(1, false),"Tauron", randInt(minPopul, maxPopul));
+        planet[10] = new Planet(500,650,new Semaphore(1, false),"Sagittarion", randInt(minPopul, maxPopul));
     }
     
     private void generateIntersection(Intersection[] inter) {
@@ -288,6 +288,18 @@ public class SuperNewHeroSimulator extends Application {
         inter[16].addNeighbours(inter[5], inter[15], inter[17], inter[18]);
         inter[17].addNeighbours(inter[7], inter[9], inter[14], inter[16]);
         inter[18].addNeighbours(inter[8], inter[9], inter[10], inter[16]);    
+    }
+    
+    public void generateTypes(int uniq, int all) {
+        powerSourceTypes = new ArrayList<>();
+        for(i=0; i<uniq; i++) {
+            powerSourceTypes.add(i);
+        }
+        for(i=uniq; i<all; i++) {
+            powerSourceTypes.add(randInt(0, uniq - 1));
+        }
+        Collections.shuffle(powerSourceTypes);
+        System.out.println(powerSourceTypes);
     }
      
     public static ArrayList<Intersection> findPath(Intersection start, Intersection end) {
