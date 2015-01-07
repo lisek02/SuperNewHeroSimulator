@@ -62,5 +62,19 @@ public class PowerSource {
     public void setPotential(double potential) {
         this.potential = potential;
     }
+
+    /**
+     * @return the type
+     */
+    public int getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
     
 }

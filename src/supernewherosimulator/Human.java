@@ -217,14 +217,14 @@ public abstract class Human implements Runnable {
     }
     
     public void showCharacterDetails() {
+        Label characterDetails = new Label();
         int posX = (int) SuperNewHeroSimulator.scene.getWidth() - 150;
         int posY = 240;
-        Label characterDetails = new Label();
+ 
         characterDetails.setLayoutX(posX + SuperNewHeroSimulator.shiftX);
         characterDetails.setLayoutY(posY + SuperNewHeroSimulator.shiftY);
         characterDetails.setWrapText(true);
-        characterDetails.setText("name:" + this.name + "\n"                  
-                                );
+        characterDetails.setText(this.getText());
         
         this.character.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -234,6 +234,11 @@ public abstract class Human implements Runnable {
                 SuperNewHeroSimulator.characterLabels.getChildren().add(characterDetails);
             }
         });
+    }
+    
+    private String getText() {
+        String text = "Name: " + this.name + "\nFamilyTown: ";
+        return text;
     }
     
     public void displayCharacterInfo() {

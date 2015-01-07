@@ -62,7 +62,7 @@ public class SuperNewHeroSimulator extends Application {
     public static Group releaseButton;
     public static Scene scene;
     
-    public static int shiftX = 0;
+    public static int shiftX = -20;
     public static int shiftY = 0;
     
     public static int maxNumOfCivil = 1000;
@@ -94,11 +94,19 @@ public class SuperNewHeroSimulator extends Application {
         planetLabel.setLayoutX(scene.getWidth() - 150 + shiftX);
         planetLabel.setLayoutY(20 + shiftY);
 
-        Label characterLabel = new Label("Character details:");
-        characterLabel.setLayoutX(scene.getWidth() - 150 + shiftX);
-        characterLabel.setLayoutY(220 + shiftY);
+        Label civilianLabel = new Label("Civilian details:");
+        civilianLabel.setLayoutX(scene.getWidth() - 150 + shiftX);
+        civilianLabel.setLayoutY(220 + shiftY);
         
-        detailsLabels.getChildren().addAll(characterLabel, planetLabel);        
+        Label villainLabel = new Label("Cylon details:");
+        villainLabel.setLayoutX(scene.getWidth() - 150 + shiftX);
+        villainLabel.setLayoutY(370 + shiftY);
+      
+        Label SuperHeroLabel = new Label("Colonial Fleet Hero details:");
+        SuperHeroLabel.setLayoutX(scene.getWidth() - 150 + shiftX);
+        SuperHeroLabel.setLayoutY(550 + shiftY);
+        
+        detailsLabels.getChildren().addAll(planetLabel, civilianLabel, villainLabel, SuperHeroLabel);        
 
         //generating towns and intersections
         generatePlanet(planet);

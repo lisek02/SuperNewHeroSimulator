@@ -16,6 +16,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -42,6 +44,42 @@ public class Villain extends Hero {
         
         //}
         
+    }
+
+    public void showCharacterDetails() {
+        Label characterDetails = new Label();
+        int posX = (int) SuperNewHeroSimulator.scene.getWidth() - 150;
+        int posY = 390;
+ 
+        characterDetails.setLayoutX(posX + SuperNewHeroSimulator.shiftX);
+        characterDetails.setLayoutY(posY + SuperNewHeroSimulator.shiftY);
+        characterDetails.setWrapText(true);
+        characterDetails.setText(this.getText());
+
+        //Planet familyTown = (Planet) this.getFamilyTown();
+        characterDetails.setText("Name: " + this.getName() +
+                      //"\nFamilyTown: " + familyTown.getName() +
+                      "\nHP: " + this.HP +
+                      "\nintelligence: " + this.intelligence +
+                      "\nstrength: " + this.strength +
+                      "\nspeed: " + this.speed +
+                      "\nendurance: " + this.endurance +
+                      "\nenergy: " + this.enegry +
+                      "\nskill: " + this.skillId
+                      );
+
+        this.character.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                SuperNewHeroSimulator.characterLabels.getChildren().clear();
+                SuperNewHeroSimulator.characterLabels.getChildren().add(characterDetails);
+            }
+        });
+    }
+    
+    public String getText() {
+        return super.getText();
     }
     
     public void setCharacterRectangle() {

@@ -5,6 +5,9 @@
  */
 package supernewherosimulator;
 
+import javafx.event.EventHandler;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -12,23 +15,41 @@ import javafx.scene.shape.Rectangle;
  *
  * @author Lisek
  */
-public class Hero extends Human {    
-    private int HP;
-    private int intelligence;
-    private int strength;
-    private int speed;
-    private int endurance;
-    private int enegry;
-    private int skill;
+public abstract class Hero extends Human {    
+    protected int HP;
+    protected int intelligence;
+    protected int strength;
+    protected int speed;
+    protected int endurance;
+    protected int enegry;
+    protected int skillId;
 
     public Hero(String name, int id, int locationX, int locationY, Intersection familyTown) {
         super(name, id, locationX, locationY, familyTown);
+        int min = 1;
+        int max = 5;
+        this.HP = SuperNewHeroSimulator.randInt(min, max);
+        this.intelligence = SuperNewHeroSimulator.randInt(min, max);
+        this.strength = SuperNewHeroSimulator.randInt(min, max);
+        this.speed = SuperNewHeroSimulator.randInt(min, max);
+        this.endurance = SuperNewHeroSimulator.randInt(min, max);
+        this.enegry = SuperNewHeroSimulator.randInt(min, max);
+        //Planet familyPlanet = (Planet) this.getFamilyTown();
+       //this.skillId = familyPlanet.getPowerSource().getType();
     }
     
     public void run() {
-        //super.run();
+        super.run();
     }
-    
+     
+    public String getText() {
+        String text = "Name: " + this.getName() +
+                      "\nFamilyTown: " + this.getFamilyTown() +
+                      "\nHP: " + this.HP +
+                      "\nintelligence: " + this.intelligence +
+                      "\nstrength: " + this.strength;
+        return text;
+    }
     /**
      * @fight with other hero
      */
@@ -145,14 +166,14 @@ public class Hero extends Human {
      * @return the skill
      */
     public int getSkill() {
-        return skill;
+        return skillId;
     }
 
     /**
      * @param skill the skill to set
      */
-    public void setSkill(int skill) {
-        this.skill = skill;
+    public void setSkill(int skillId) {
+        this.skillId = skillId;
     }
     
 }

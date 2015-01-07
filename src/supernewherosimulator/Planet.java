@@ -50,7 +50,7 @@ public class Planet extends Intersection {
         
         Intersection target = this;
         Button releaseSH = new Button("Launch Viper!");
-        releaseSH.setLayoutX(posX);
+        releaseSH.setLayoutX(posX + SuperNewHeroSimulator.shiftX);
         releaseSH.setLayoutY(details.getLayoutY() + 120);
         SuperNewHeroSimulator.releaseButton.getChildren().add(releaseSH);
         releaseSH.setOnAction(new EventHandler<ActionEvent>() {
