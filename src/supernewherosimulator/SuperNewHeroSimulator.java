@@ -90,6 +90,18 @@ public class SuperNewHeroSimulator extends Application {
 
         Group planetsLabels = new Group();
         planets.getChildren().add(planetsLabels);
+        
+        Button releaseSH = new Button("Create Super Hero!");
+        releaseSH.setLayoutX(scene.getWidth()/2 - 150);
+        releaseSH.setLayoutY(10);
+        root.getChildren().add(releaseSH);
+        releaseSH.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                planet[5].releaseSuperHero();
+            }
+        });
 
         for(i=0; i<numOfInters; i++) {
             inter[i].setInterRectangle(i, numOfTowns);
@@ -245,6 +257,7 @@ public class SuperNewHeroSimulator extends Application {
         planet[3] = new Planet(50,250,new Semaphore(1, false),"Gemenon", randInt(minPopul, maxPopul));
         planet[4] = new Planet(950,250,new Semaphore(1, false),"Virgon", randInt(minPopul, maxPopul));
         planet[5] = new Planet(500,350,new Semaphore(1, false),"Caprica", randInt(minPopul, maxPopul));
+        planet[5].setCapital(true);
         planet[6] = new Planet(50,450,new Semaphore(1, false),"Aerilon", randInt(minPopul, maxPopul));
         planet[7] = new Planet(950,450,new Semaphore(1, false),"Libran", randInt(minPopul, maxPopul));
         planet[8] = new Planet(275,550,new Semaphore(1, false),"Canceron", randInt(minPopul, maxPopul));

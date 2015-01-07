@@ -249,7 +249,10 @@ public abstract class Human implements Runnable {
     public Label getCharacterInfo() {
         Label details = new Label();
         details.setWrapText(true);
-        details.setText("name:" + this.name);
+        details.setText("name:" + this.name + "\n" //+
+                        //"family town: " + ()
+        
+                        );
         return details;
     }
     

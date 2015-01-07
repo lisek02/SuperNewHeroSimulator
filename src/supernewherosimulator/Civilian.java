@@ -10,6 +10,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import static supernewherosimulator.SuperNewHeroSimulator.randInt;
 
@@ -49,6 +50,15 @@ public class Civilian extends Human {
             this.checkCollision(character, SuperNewHeroSimulator.inter);
         }
     }
+
+    public Label getCharacterInfo() {
+        Label details = new Label();
+        details.setWrapText(true);
+        details.setText("name: " + this.getName() + "\n" +
+                        "family town: " + ((Planet)this.getFamilyTown()).getName()
+                        );
+        return details;
+    }    
     
     /**
      *

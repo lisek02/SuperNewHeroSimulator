@@ -25,7 +25,7 @@ public class Intersection extends Place {
     private ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
     private int bound = 20;
     protected boolean occupied;
-    private Rectangle interRectangle;
+    protected Rectangle interRectangle;
     
     public Semaphore sem;
     
