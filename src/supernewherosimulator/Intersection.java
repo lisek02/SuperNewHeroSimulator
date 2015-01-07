@@ -49,7 +49,8 @@ public class Intersection extends Place {
                         "permits: " + this.sem.availablePermits());
         
         if(this.getClass() == Planet.class) {
-            Button releaseSH = new Button("Create Super Hero!");
+            Intersection target = this;
+            Button releaseSH = new Button("Send Super Hero!");
             releaseSH.setLayoutX(SuperNewHeroSimulator.scene.getWidth()/2 - 150);
             releaseSH.setLayoutY(10);
             SuperNewHeroSimulator.releaseButton.getChildren().add(releaseSH);
@@ -62,6 +63,7 @@ public class Intersection extends Place {
                     Thread threadS = new Thread(sHero);
                     Platform.runLater(threadS);
                     capital.releaseSuperHero();
+                    sHero.moveBetween(capital, target);
                 }
             });            
         }
