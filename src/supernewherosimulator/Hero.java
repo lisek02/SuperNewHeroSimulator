@@ -5,12 +5,14 @@
  */
 package supernewherosimulator;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
 /**
  *
  * @author Lisek
  */
-public class Hero extends Human {
-    
+public class Hero extends Human {    
     private int HP;
     private int intelligence;
     private int strength;
@@ -23,7 +25,10 @@ public class Hero extends Human {
         super(name, id, locationX, locationY, familyTown);
     }
     
-
+    public void setCharacterRectangle() {
+        this.character = new Rectangle(this.getFamilyTown().getX(), this.getFamilyTown().getY(), 20, 20);
+        this.character.setFill(Color.GREEN);
+    }
     
     public void run() {
         //super.run();

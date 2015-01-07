@@ -24,6 +24,7 @@ import static supernewherosimulator.SuperNewHeroSimulator.numOfInters;
 public class Intersection extends Place {
     private ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
     private int bound = 20;
+    protected boolean occupied;
     private Rectangle interRectangle;
     
     public Semaphore sem;
@@ -31,6 +32,7 @@ public class Intersection extends Place {
     public Intersection(int x, int y, Semaphore sem) {
         super(x, y);
         this.sem = sem;
+        this.occupied = false;
     }
     
     public Label showIntersectionDetails() {
@@ -121,8 +123,22 @@ public class Intersection extends Place {
         String color;
         if(i<numOfTowns) color = "Black";
         else color = "Red";
-        this.interRectangle = new Rectangle(this.getX(), this.getY(), this.bound, this.bound);
+        this.interRectangle = new Rectangle(this.getX()-2, this.getY()-2, this.bound+4, this.bound+4);
         this.interRectangle.setFill(Color.web(color));        
+    }
+    
+    /**
+     * @return the occupied
+     */
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    /**
+     * @param occupied the occupied to set
+     */
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
     }
     
 }

@@ -39,7 +39,7 @@ public class Civilian extends Human {
                 toGo = (Planet) SuperNewHeroSimulator.inter[toGoId];
             } while (toGo == homeTown);
             
-            Intersection currentIntersection = this.familyTown;
+            Intersection currentIntersection = this.getFamilyTown();
             Intersection endIntersection = toGo;
 
             //move between towns

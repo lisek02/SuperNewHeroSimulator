@@ -48,9 +48,9 @@ public abstract class Human implements Runnable {
     private int id;
     private int locationX;
     private int locationY;
-    private int bound = 5;
-    protected Intersection familyTown;
-    protected Intersection currentPosition;
+    protected int bound = 5;
+    private Intersection familyTown;
+    private Planet currentPosition;
     protected Rectangle character;
     
     public Human(String name, int id, int locationX, int locationY, Intersection familyTown) {
@@ -352,7 +352,21 @@ public abstract class Human implements Runnable {
     }
     
     public void setCharacterRectangle() {
-        this.character = new Rectangle(this.familyTown.getX() - this.bound, this.familyTown.getY() - this.bound, 10, 10);
+        this.character = new Rectangle(this.getFamilyTown().getX() - this.bound, this.getFamilyTown().getY() - this.bound, 10, 10);
         this.character.setFill(Color.BLUE);
+    }
+
+    /**
+     * @return the currentPosition
+     */
+    public Planet getCurrentPosition() {
+        return currentPosition;
+    }
+
+    /**
+     * @param currentPosition the currentPosition to set
+     */
+    public void setCurrentPosition(Planet currentPosition) {
+        this.currentPosition = currentPosition;
     }
 }

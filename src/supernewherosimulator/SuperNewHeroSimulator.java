@@ -101,7 +101,7 @@ public class SuperNewHeroSimulator extends Application {
                     Intersection thisInter = null;
                     Rectangle rec = (Rectangle)event.getTarget();
                     for(i=0; i<numOfInters; i++) {
-                        if((inter[i].getX() == rec.getX()) && (inter[i].getY() == rec.getY())) {
+                        if((inter[i].getX() == rec.getX()+2) && (inter[i].getY() == rec.getY()+2)) {
                             thisInter = inter[i];
                         }
                     }

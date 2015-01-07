@@ -31,7 +31,8 @@ public class Planet extends Intersection {
         details.setText("(" + this.getX() + " " + this.getY() + ")\n" +
                         "Name: " + this.getName() + "\n" +
                         "Population: " + this.getPopulation() + "\n" +
-                        "Power source: " + this.powerSource.getPotential()
+                        "Power source: " + this.getPowerSource().getPotential() + "\n" +
+                        "Occupied: " + this.isOccupied()
                         );
         super.showIntersectionDetails();
         return details;
@@ -89,7 +90,22 @@ public class Planet extends Intersection {
      * decrease planet population by 1
      */
     public void decreasePopulation() {
-        this.population -= 1;
+        if(this.population > 0) {
+            this.population -= 2;
+        }
     }    
-    
+
+    /**
+     * @return the powerSource
+     */
+    public PowerSource getPowerSource() {
+        return powerSource;
+    }
+
+    /**
+     * @param powerSource the powerSource to set
+     */
+    public void setPowerSource(PowerSource powerSource) {
+        this.powerSource = powerSource;
+    }    
 }
