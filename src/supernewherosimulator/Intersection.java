@@ -9,13 +9,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.shape.Rectangle;
 import static supernewherosimulator.SuperNewHeroSimulator.numOfInters;
+import static supernewherosimulator.SuperNewHeroSimulator.root;
 
 /**
  *
@@ -40,6 +47,26 @@ public class Intersection extends Place {
         details.setWrapText(true);
         details.setText("(" + this.getX() + " " + this.getY() + ")\n" +
                         "permits: " + this.sem.availablePermits());
+        
+        if(this.getClass() == Planet.class) {
+            Button releaseSH = new Button("Create Super Hero!");
+            releaseSH.setLayoutX(SuperNewHeroSimulator.scene.getWidth()/2 - 150);
+            releaseSH.setLayoutY(10);
+            SuperNewHeroSimulator.releaseButton.getChildren().add(releaseSH);
+            releaseSH.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent event) {
+                    Planet capital = SuperNewHeroSimulator.planet[5];
+                    SuperHero sHero = new SuperHero("Cpt. Adama", SuperNewHeroSimulator.randInt(1, 100), capital.getX(), capital.getY(), capital);
+                    Thread threadS = new Thread(sHero);
+                    Platform.runLater(threadS);
+                    capital.releaseSuperHero();
+                }
+            });            
+        }
+
+
         return details;
     }
     

@@ -56,7 +56,8 @@ public class SuperNewHeroSimulator extends Application {
     public static Group root;    
     public static Group characters;
     public static Group paths;    
-    public static Group characterLabels;    
+    public static Group characterLabels;
+    public static Group releaseButton;
     public static Scene scene;
     
     public static int maxNumOfCivil = 1000;
@@ -91,27 +92,15 @@ public class SuperNewHeroSimulator extends Application {
         Group planetsLabels = new Group();
         planets.getChildren().add(planetsLabels);
         
-        Button releaseSH = new Button("Create Super Hero!");
-        releaseSH.setLayoutX(scene.getWidth()/2 - 150);
-        releaseSH.setLayoutY(10);
-        root.getChildren().add(releaseSH);
-        releaseSH.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                SuperHero sHero = new SuperHero("Cpt. Adama", randInt(1, 100), planet[5].getX(), planet[5].getY(), planet[5]);
-                Thread threadS = new Thread(sHero);
-                Platform.runLater(threadS);
-                planet[5].releaseSuperHero();
-            }
-        });
-
+        releaseButton = new Group();
+        root.getChildren().add(releaseButton);
+        
         for(i=0; i<numOfInters; i++) {
             inter[i].setInterRectangle(i, numOfTowns);
             planetNode[i] = inter[i].getInterRectangle();
             planets.getChildren().add(planetNode[i]);
             
-            planetNode[i].setOnMouseEntered(new EventHandler<MouseEvent>() {
+            planetNode[i].setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent event) {
                     Intersection thisInter = null;
                     Rectangle rec = (Rectangle)event.getTarget();
@@ -120,17 +109,19 @@ public class SuperNewHeroSimulator extends Application {
                             thisInter = inter[i];
                         }
                     }
+                    planetsLabels.getChildren().clear();
+                    releaseButton.getChildren().clear();
                     planetsLabels.getChildren().add(thisInter.showIntersectionDetails());
                     thisInter.showIntersectionDetails();
                     thisInter.print();           
                 }            
             });
             
-            planetNode[i].setOnMouseExited(new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent event) {
-                    planetsLabels.getChildren().clear();
-                }
-            });
+//            planetNode[i].setOnMouseExited(new EventHandler<MouseEvent>() {
+//                public void handle(MouseEvent event) {
+//                    planetsLabels.getChildren().clear();
+//                }
+//            });
             
             
         }
