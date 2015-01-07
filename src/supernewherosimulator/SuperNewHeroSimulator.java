@@ -99,6 +99,9 @@ public class SuperNewHeroSimulator extends Application {
 
             @Override
             public void handle(ActionEvent event) {
+                SuperHero sHero = new SuperHero("Cpt. Adama", randInt(1, 100), planet[5].getX(), planet[5].getY(), planet[5]);
+                Thread threadS = new Thread(sHero);
+                Platform.runLater(threadS);
                 planet[5].releaseSuperHero();
             }
         });
