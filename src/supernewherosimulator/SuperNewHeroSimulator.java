@@ -79,7 +79,7 @@ public class SuperNewHeroSimulator extends Application {
         root = new Group();
         root.setId("root");
        
-        scene = new Scene(root, 1200, 800);
+        scene = new Scene(root, 1200, 730);
         scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         
         primaryStage.setTitle("Super New Hero Simulator");
@@ -90,7 +90,7 @@ public class SuperNewHeroSimulator extends Application {
         Group detailsLabels = new Group();
         root.getChildren().add(detailsLabels);
         
-        Label planetLabel = new Label("Character details:");
+        Label planetLabel = new Label("Planet details:");
         planetLabel.setLayoutX(scene.getWidth() - 150 + shiftX);
         planetLabel.setLayoutY(20 + shiftY);
 
@@ -165,7 +165,7 @@ public class SuperNewHeroSimulator extends Application {
 
 
         
-        int releaseTheCivil = 20000;
+        int releaseTheCivil = 2000;
         int releaseTheVillain = 20000;
         
         Timer timerCivil = new Timer();

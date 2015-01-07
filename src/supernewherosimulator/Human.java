@@ -143,7 +143,7 @@ public abstract class Human implements Runnable {
 
         SequentialTransition seqTransition = new SequentialTransition(character);
 
-        final Duration sec15 = Duration.millis(3000);
+        final Duration sec15 = Duration.millis(500);
         final Duration sec30 = Duration.millis(1500);          
 
        //adding path sections to sequential trasition
