@@ -12,6 +12,7 @@ import java.util.TimerTask;
 import javafx.animation.Interpolator;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -31,7 +32,18 @@ public class Villain extends Hero {
 
     public void run() {
         super.run();
+        //Platform.runLater(this);
         if(this.moveToClosestTown()) {
+            this.attack();
+        }
+        //if((this.getCurrentPosition().getPowerSource().getPotential() == 0) && (this.getCurrentPosition().getPopulation() == 0)) {
+        
+        //}
+        
+    }
+    
+    public void attack() {
+
             double currentPositionPotential = this.getCurrentPosition().getPowerSource().getPotential();
             Villain tmp = this;
             //while(currentPositionPotential > 0) {
@@ -41,22 +53,17 @@ public class Villain extends Hero {
                 public void run() {
                     tmp.absorbPotential();
                     tmp.eatPeople();
+
+                    if((tmp.getCurrentPosition().getPowerSource().getPotential() == 0) && (tmp.getCurrentPosition().getPopulation() <= 0)) {
+                        absorbing.cancel();
+                        //absorbingTask.cancel();
+                        //Platform.runLater(this);
+                        //tmp.character.setFill(Color.PINK);
+                        //tmp.moveBetween(tmp.getCurrentPosition(), SuperNewHeroSimulator.planet[2]);
+                    }
                 }      
             };
             absorbing.scheduleAtFixedRate(absorbingTask, 0, 2000);
-            if((currentPositionPotential == 0) && (this.getCurrentPosition().getPopulation() <= 0)) {
-                absorbing.cancel();
-                absorbingTask.cancel();
-                this.character.setFill(Color.PINK);
-            }
-        }
-        //}
-//        if(currentPositionPotential == 0) {
-//            this.moveToClosestTown();
-//        }
-//        
-
-        
         //choose new city
         //go to new city (meanwhile check collision
         //decrease potential

@@ -140,8 +140,8 @@ public class SuperNewHeroSimulator extends Application {
 
 
         
-        int releaseTheCivil = 2000;
-        int releaseTheVillain = 2000;
+        int releaseTheCivil = 20000;
+        int releaseTheVillain = 20000;
         
         Timer timerCivil = new Timer();
         timerCivil.scheduleAtFixedRate(new TimerTask() {
@@ -151,7 +151,9 @@ public class SuperNewHeroSimulator extends Application {
                        int townToReleaseFrom = randInt(0, numOfTowns-1);
                        //System.out.println(townToReleaseFrom);
                        Civilian cywil = new Civilian("cywil" + randInt(1, 1000), i, inter[townToReleaseFrom].getX(), inter[townToReleaseFrom].getY(), inter[townToReleaseFrom]);  
-                       Thread thread = new Thread(cywil);          
+                       Thread thread = new Thread(cywil); 
+                       Platform.runLater(thread);
+                        //thread.start();
             }       
         }, 0, releaseTheCivil);
         
@@ -165,6 +167,8 @@ public class SuperNewHeroSimulator extends Application {
                         placeToSpawn.randomEdge();
                         Villain vill = new Villain("villain" + randInt(1, 1000), randInt(1, 1000), placeToSpawn.getX(), placeToSpawn.getY(), new Intersection(placeToSpawn.getX(), placeToSpawn.getY()));
                         Thread threadV = new Thread(vill);
+                        Platform.runLater(threadV);
+                        //threadV.start();
             }
         }, 0, releaseTheVillain);
         

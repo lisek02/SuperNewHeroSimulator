@@ -90,9 +90,14 @@ public class Planet extends Intersection {
      * decrease planet population by 1
      */
     public void decreasePopulation() {
-        if(this.population > 0) {
-            this.population -= 2;
+        int ratio = 100;
+        if(this.population <= ratio && this.population > 0) {
+            this.population = 0;
         }
+        else if(this.population > 0) {
+            this.population -= ratio;
+        }
+
     }    
 
     /**

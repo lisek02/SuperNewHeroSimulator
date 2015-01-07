@@ -60,7 +60,7 @@ public abstract class Human implements Runnable {
         this.setLocationY(locationY);
         this.familyTown = familyTown;
         this.setCharacterRectangle();
-        Platform.runLater(this);
+        //Platform.runLater(this);
     }
     
     public void run() {
@@ -131,6 +131,7 @@ public abstract class Human implements Runnable {
         Place startPosition, endPosition;
 
         Node character = this.character;
+        //Platform.runLater(this);
         SuperNewHeroSimulator.paths.getChildren().add(character);
              
         //calculating a path
@@ -159,8 +160,12 @@ public abstract class Human implements Runnable {
             chTrans2.setByX(endPosition.getX() - startPosition.getX());
             chTrans2.setByY(endPosition.getY() - startPosition.getY());
 
+            chTrans1.setAutoReverse(true);
+            chTrans2.setAutoReverse(true);
+            
             seqTransition.getChildren().add(chTrans1);
             seqTransition.getChildren().add(chTrans2);
+            
 
             currentIntersection = path1;
             currentHumanPosition = endPosition;
@@ -168,7 +173,6 @@ public abstract class Human implements Runnable {
         //if position == intersection, check if free to go, wait or go
 
         seqTransition.setInterpolator(Interpolator.LINEAR);
-        System.out.println("Cue points:" + seqTransition.getCuePoints());
         seqTransition.play();
 //        if(this.getCurrentPosition().sem.availablePermits() == 0) {
 //            seqTransition.pause();
@@ -180,7 +184,6 @@ public abstract class Human implements Runnable {
     
     public void checkCollision(Node first, Intersection[] second) {
         ObservableBooleanValue colliding;
-        
         for(Intersection inter : second) {
             colliding = Bindings.createBooleanBinding(new Callable<Boolean>() {
 
@@ -195,14 +198,14 @@ public abstract class Human implements Runnable {
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                     if(newValue) {
                         inter.getInterRectangle().setFill(Color.YELLOW);
-                        try {
-                            inter.sem.acquire();
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+//                        try {
+//                            inter.sem.acquire();
+//                        } catch (InterruptedException ex) {
+//                            Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
                     } else {
                         inter.getInterRectangle().setFill(Color.RED);
-                        inter.sem.release();
+//                        inter.sem.release();
                     }
                 }
             });

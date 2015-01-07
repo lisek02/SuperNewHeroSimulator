@@ -39,8 +39,12 @@ public class PowerSource {
      *
      */
     public void decreasePotential() {
-        if(this.getPotential() > 0) {
-            this.setPotential(this.getPotential() - 1);
+        int ratio = 10;
+        if(this.getPotential() > ratio && this.getPotential() > 0) {
+            this.setPotential(0);
+        }
+        else if(this.getPotential() > 0) {
+            this.setPotential(this.getPotential() - 10);
         }
         
     }
