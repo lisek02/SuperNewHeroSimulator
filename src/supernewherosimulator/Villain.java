@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 /**
@@ -28,6 +29,7 @@ public class Villain extends Hero {
     public Villain(String name, int id, int locationX, int locationY, Intersection familyTown) {
         super(name, id, locationX, locationY, familyTown);
         this.character.setFill(Color.GREEN);
+        this.bound = 8;
     }
 
     public void run() {
@@ -40,6 +42,11 @@ public class Villain extends Hero {
         
         //}
         
+    }
+    
+    public void setCharacterRectangle() {
+        this.character = new Rectangle(this.getFamilyTown().getX() + this.bound/2, this.getFamilyTown().getY() + this.bound/2, 16, 16);
+        this.character.setFill(Color.GREEN);
     }
     
     public void attack() {

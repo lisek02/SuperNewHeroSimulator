@@ -25,11 +25,6 @@ public class Hero extends Human {
         super(name, id, locationX, locationY, familyTown);
     }
     
-    public void setCharacterRectangle() {
-        this.character = new Rectangle(this.getFamilyTown().getX(), this.getFamilyTown().getY(), 20, 20);
-        this.character.setFill(Color.GREEN);
-    }
-    
     public void run() {
         //super.run();
     }

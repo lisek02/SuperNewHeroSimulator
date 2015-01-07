@@ -64,7 +64,7 @@ public abstract class Human implements Runnable {
     }
     
     public void run() {
-        this.displayCharacterInfo();
+        this.showCharacterDetails();
     }
     
     public Place calculateStartPosition(Intersection currentIntersection, Intersection endIntersection) {
@@ -148,24 +148,27 @@ public abstract class Human implements Runnable {
 
        //adding path sections to sequential trasition
         for(Intersection path1 : path) {             
-
-            startPosition = calculateStartPosition(currentIntersection, path1);
-            endPosition = calculateEndPosition(currentIntersection, path1); 
-
-            TranslateTransition chTrans1 = new TranslateTransition(sec15);
-            chTrans1.setByX(startPosition.getX() - currentHumanPosition.getX());
-            chTrans1.setByY(startPosition.getY() - currentHumanPosition.getY());
+            if(this.getClass() == SuperHero.class) {
+                startPosition = new Place(currentIntersection.getX(), currentIntersection.getY());
+                endPosition = new Place(path1.getX(), path1.getY());
+            } else {
+                startPosition = calculateStartPosition(currentIntersection, path1);
+                endPosition = calculateEndPosition(currentIntersection, path1);      
+            }
+            
+            if(!(this.getClass() == SuperHero.class)) {
+                TranslateTransition chTrans1 = new TranslateTransition(sec15);
+                chTrans1.setByX(startPosition.getX() - currentHumanPosition.getX());
+                chTrans1.setByY(startPosition.getY() - currentHumanPosition.getY());
+                seqTransition.getChildren().add(chTrans1);
+                chTrans1.setAutoReverse(true);
+            }
 
             TranslateTransition chTrans2 = new TranslateTransition(sec30);
             chTrans2.setByX(endPosition.getX() - startPosition.getX());
             chTrans2.setByY(endPosition.getY() - startPosition.getY());
-
-            chTrans1.setAutoReverse(true);
-            chTrans2.setAutoReverse(true);
-            
-            seqTransition.getChildren().add(chTrans1);
             seqTransition.getChildren().add(chTrans2);
-            
+            chTrans2.setAutoReverse(true);
 
             currentIntersection = path1;
             currentHumanPosition = endPosition;
@@ -211,6 +214,26 @@ public abstract class Human implements Runnable {
             });
         }
         //return colliding.get();
+    }
+    
+    public void showCharacterDetails() {
+        int posX = (int) SuperNewHeroSimulator.scene.getWidth() - 150;
+        int posY = 240;
+        Label characterDetails = new Label();
+        characterDetails.setLayoutX(posX + SuperNewHeroSimulator.shiftX);
+        characterDetails.setLayoutY(posY + SuperNewHeroSimulator.shiftY);
+        characterDetails.setWrapText(true);
+        characterDetails.setText("name:" + this.name + "\n"                  
+                                );
+        
+        this.character.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                SuperNewHeroSimulator.characterLabels.getChildren().clear();
+                SuperNewHeroSimulator.characterLabels.getChildren().add(characterDetails);
+            }
+        });
     }
     
     public void displayCharacterInfo() {

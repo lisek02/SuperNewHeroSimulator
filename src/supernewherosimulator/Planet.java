@@ -6,6 +6,9 @@
 package supernewherosimulator;
 
 import java.util.concurrent.Semaphore;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -30,17 +33,38 @@ public class Planet extends Intersection {
     }
     
     public Label showIntersectionDetails() {
+        int posX = (int) SuperNewHeroSimulator.scene.getWidth() - 150;
+        int posY = 40;
         Label details = new Label();
-        details.setLayoutX(10.0);
-        details.setLayoutY(10.0);
+        details.setLayoutX(posX + SuperNewHeroSimulator.shiftX);
+        details.setLayoutY(posY + SuperNewHeroSimulator.shiftY);
         details.setWrapText(true);
-        details.setText("Name: " + this.getName() + "\n" +
+        details.setText(
+                        "Name: " + this.getName() + "\n" +
                         "Capital: " + this.isCapital() + "\n" +
                         "Coordinates: (" + this.getX() + " " + this.getY() + ")\n" +                                
                         "Population: " + this.getPopulation() + "\n" +
                         "Power source: " + this.getPowerSource().getPotential() + "\n" +
                         "Occupied: " + this.isOccupied()
                         );
+        
+        Intersection target = this;
+        Button releaseSH = new Button("Send Super Hero!");
+        releaseSH.setLayoutX(posX);
+        releaseSH.setLayoutY(details.getLayoutY() + 120);
+        SuperNewHeroSimulator.releaseButton.getChildren().add(releaseSH);
+        releaseSH.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                Planet capital = SuperNewHeroSimulator.planet[5];
+                SuperHero sHero = new SuperHero("Cpt. Adama", SuperNewHeroSimulator.randInt(1, 100), capital.getX(), capital.getY(), capital);
+                Thread threadS = new Thread(sHero);
+                Platform.runLater(threadS);
+                capital.releaseSuperHero();
+                sHero.moveBetween(capital, target);
+            }
+        });            
         super.showIntersectionDetails();
         return details;
     }

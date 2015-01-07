@@ -7,6 +7,7 @@ package supernewherosimulator;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -16,7 +17,7 @@ public class SuperHero extends Hero {
     
     public SuperHero(String name, int id, int locationX, int locationY, Intersection familyTown) {
         super(name, id, locationX, locationY, familyTown);
-        this.character.setFill(Color.OLIVEDRAB);
+        this.bound = 10;
     }
     
     public void run() {
@@ -24,5 +25,10 @@ public class SuperHero extends Hero {
         Group superHero = new Group();
         superHero.getChildren().add(this.character);
         SuperNewHeroSimulator.characters.getChildren().add(superHero);
+    }
+    
+    public void setCharacterRectangle() {
+        this.character = new Rectangle(this.getFamilyTown().getX(), this.getFamilyTown().getY(), 20, 20);
+        this.character.setFill(Color.OLIVEDRAB);
     }
 }

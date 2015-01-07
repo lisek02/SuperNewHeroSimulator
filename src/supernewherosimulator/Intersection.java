@@ -47,28 +47,6 @@ public class Intersection extends Place {
         details.setWrapText(true);
         details.setText("(" + this.getX() + " " + this.getY() + ")\n" +
                         "permits: " + this.sem.availablePermits());
-        
-        if(this.getClass() == Planet.class) {
-            Intersection target = this;
-            Button releaseSH = new Button("Send Super Hero!");
-            releaseSH.setLayoutX(SuperNewHeroSimulator.scene.getWidth()/2 - 150);
-            releaseSH.setLayoutY(10);
-            SuperNewHeroSimulator.releaseButton.getChildren().add(releaseSH);
-            releaseSH.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent event) {
-                    Planet capital = SuperNewHeroSimulator.planet[5];
-                    SuperHero sHero = new SuperHero("Cpt. Adama", SuperNewHeroSimulator.randInt(1, 100), capital.getX(), capital.getY(), capital);
-                    Thread threadS = new Thread(sHero);
-                    Platform.runLater(threadS);
-                    capital.releaseSuperHero();
-                    sHero.moveBetween(capital, target);
-                }
-            });            
-        }
-
-
         return details;
     }
     

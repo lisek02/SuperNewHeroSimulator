@@ -33,6 +33,7 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.CubicCurveTo;
@@ -55,10 +56,14 @@ public class SuperNewHeroSimulator extends Application {
     
     public static Group root;    
     public static Group characters;
-    public static Group paths;    
+    public static Group paths;
+    public static Group detailsLabels;
     public static Group characterLabels;
     public static Group releaseButton;
     public static Scene scene;
+    
+    public static int shiftX = 0;
+    public static int shiftY = 0;
     
     public static int maxNumOfCivil = 1000;
     //minimal and maximal number of civilians in a town
@@ -80,6 +85,20 @@ public class SuperNewHeroSimulator extends Application {
         primaryStage.setTitle("Super New Hero Simulator");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        //showing control labels
+        Group detailsLabels = new Group();
+        root.getChildren().add(detailsLabels);
+        
+        Label planetLabel = new Label("Character details:");
+        planetLabel.setLayoutX(scene.getWidth() - 150 + shiftX);
+        planetLabel.setLayoutY(20 + shiftY);
+
+        Label characterLabel = new Label("Character details:");
+        characterLabel.setLayoutX(scene.getWidth() - 150 + shiftX);
+        characterLabel.setLayoutY(220 + shiftY);
+        
+        detailsLabels.getChildren().addAll(characterLabel, planetLabel);        
 
         //generating towns and intersections
         generatePlanet(planet);
