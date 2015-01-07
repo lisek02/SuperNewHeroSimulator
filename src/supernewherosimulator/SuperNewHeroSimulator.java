@@ -163,7 +163,7 @@ public class SuperNewHeroSimulator extends Application {
             public void run() {
                         Place placeToSpawn = new Place(0,0);
                         placeToSpawn.randomEdge();
-                        Villain vill = new Villain("villain" + randInt(1, 1000), randInt(1, 1000), placeToSpawn.getX(), placeToSpawn.getY(), new Intersection(placeToSpawn.getX(), placeToSpawn.getY(), new Semaphore(1)));
+                        Villain vill = new Villain("villain" + randInt(1, 1000), randInt(1, 1000), placeToSpawn.getX(), placeToSpawn.getY(), new Intersection(placeToSpawn.getX(), placeToSpawn.getY()));
                         Thread threadV = new Thread(vill);
             }
         }, 0, releaseTheVillain);
@@ -258,15 +258,14 @@ public class SuperNewHeroSimulator extends Application {
         for(i=0; i<numOfTowns; i++) {
             inter[i] = planet[i];
         }        
-
-        inter[11] = new Intersection(500, 150, new Semaphore(1, false));
-        inter[12] = new Intersection(275, 250, new Semaphore(1, false));
-        inter[13] = new Intersection(500, 250, new Semaphore(1, false));
-        inter[14] = new Intersection(725, 250, new Semaphore(1, false));
-        inter[15] = new Intersection(275, 450, new Semaphore(1, false));
-        inter[16] = new Intersection(500, 450, new Semaphore(1, false));
-        inter[17] = new Intersection(725, 450, new Semaphore(1, false));
-        inter[18] = new Intersection(500, 550, new Semaphore(1, false));
+        inter[11] = new Intersection(500, 150);
+        inter[12] = new Intersection(275, 250);
+        inter[13] = new Intersection(500, 250);
+        inter[14] = new Intersection(725, 250);
+        inter[15] = new Intersection(275, 450);
+        inter[16] = new Intersection(500, 450);
+        inter[17] = new Intersection(725, 450);
+        inter[18] = new Intersection(500, 550);
         
         //neighbours
         inter[0].addNeighbours(inter[11]);

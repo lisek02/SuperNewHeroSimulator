@@ -19,7 +19,7 @@ public class Planet extends Intersection {
     private PowerSource powerSource;
 
     public Planet(int x, int y, Semaphore sem, String name, int population) {
-        super(x, y, sem);
+        super(x, y);
         this.name = name;
         this.population = population;
         this.powerSource = new PowerSource();

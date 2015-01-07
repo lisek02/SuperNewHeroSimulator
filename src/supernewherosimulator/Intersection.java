@@ -29,16 +29,17 @@ public class Intersection extends Place {
     
     public Semaphore sem;
     
-    public Intersection(int x, int y, Semaphore sem) {
+    public Intersection(int x, int y) {
         super(x, y);
-        this.sem = sem;
+        this.sem = new Semaphore(1, true);
         this.occupied = false;
     }
     
     public Label showIntersectionDetails() {
         Label details = new Label();
         details.setWrapText(true);
-        details.setText("(" + this.getX() + " " + this.getY() + ")\n" + this.sem.toString());
+        details.setText("(" + this.getX() + " " + this.getY() + ")\n" +
+                        "permits: " + this.sem.availablePermits());
         return details;
     }
     

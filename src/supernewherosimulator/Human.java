@@ -128,27 +128,8 @@ public abstract class Human implements Runnable {
     }
     
     public void moveBetween(Intersection currentIntersection, Intersection finalIntersection) {
-        //Initialization
-        
-        //Planet homeTown = (Planet)this.getFamilyTown();
-        //Planet toGo;
-        
-//        int toGoId;
-//        do {
-//            toGoId = randInt(0, SuperNewHeroSimulator.numOfTowns - 1);
-//            toGo = (Planet) SuperNewHeroSimulator.inter[toGoId];
-//        } while (toGo == homeTown);
-
-//        Intersection currentIntersection = this.familyTown; 
-        
-        
         Place startPosition, endPosition;
-        
-        //drawing a character
-//        int rectangleBound = 5;        
-//        Rectangle human = new Rectangle(this.getLocationX() - rectangleBound, this.getLocationY() - rectangleBound, 10, 10);
-//        human.setFill(Color.web("blue"));
-        
+
         Node character = this.character;
         SuperNewHeroSimulator.paths.getChildren().add(character);
              
@@ -189,6 +170,12 @@ public abstract class Human implements Runnable {
         seqTransition.setInterpolator(Interpolator.LINEAR);
         System.out.println("Cue points:" + seqTransition.getCuePoints());
         seqTransition.play();
+//        if(this.getCurrentPosition().sem.availablePermits() == 0) {
+//            seqTransition.pause();
+//        }
+//        else {
+//            seqTransition.play();
+//        }
     }     
     
     public void checkCollision(Node first, Intersection[] second) {
@@ -208,22 +195,14 @@ public abstract class Human implements Runnable {
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                     if(newValue) {
                         inter.getInterRectangle().setFill(Color.YELLOW);
-                        //collides = true;
-
-                        //try {
-                            //seqTransition.stop();
-                            //inter.sem.acquire();
-                            //seqTransition.play();
-                            //inter.getInterRectangle().setFill(Color.YELLOW);
-                        //} catch (InterruptedException ex) {
-                           // Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
-                        //}
+                        try {
+                            inter.sem.acquire();
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     } else {
                         inter.getInterRectangle().setFill(Color.RED);
-                        //second.setVisible(true);
-                        //inter.sem.release();
-                        //seqTransition.play();
-                        //inter.getInterRectangle().setFill(Color.RED);
+                        inter.sem.release();
                     }
                 }
             });
