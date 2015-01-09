@@ -177,6 +177,15 @@ public abstract class Human implements Runnable {
 
         seqTransition.setInterpolator(Interpolator.LINEAR);
         seqTransition.play();
+        
+        Human thisHuman = this;
+        seqTransition.setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                thisHuman.getCharacterRectangle().setVisible(false);
+            }
+        });
 //        if(this.getCurrentPosition().sem.availablePermits() == 0) {
 //            seqTransition.pause();
 //        }
@@ -200,14 +209,14 @@ public abstract class Human implements Runnable {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                     if(newValue) {
-                        inter.getInterRectangle().setFill(Color.YELLOW);
+                        //inter.getInterRectangle().setFill(Color.YELLOW);
 //                        try {
 //                            inter.sem.acquire();
 //                        } catch (InterruptedException ex) {
 //                            Logger.getLogger(Human.class.getName()).log(Level.SEVERE, null, ex);
 //                        }
                     } else {
-                        inter.getInterRectangle().setFill(Color.RED);
+                        //inter.getInterRectangle().setFill(Color.RED);
 //                        inter.sem.release();
                     }
                 }
