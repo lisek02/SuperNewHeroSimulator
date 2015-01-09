@@ -50,6 +50,25 @@ public class Intersection extends Place {
         //return details;
     }
     
+    public void drawRoad(Intersection end) {
+        int difX = end.getX() - this.getX();
+        int difY = end.getY() - this.getY();
+        if(difX > 0) {
+            Rectangle road = new Rectangle(this.getX(), this.getY(), difX, 20);
+            road.setStroke(Color.BLACK);
+            road.setFill(Color.WHITE);
+            road.setStrokeWidth(2);
+            SuperNewHeroSimulator.roads.getChildren().add(road); 
+        }
+       if(difY > 0) {
+            Rectangle road = new Rectangle(this.getX(), this.getY(), 20, difY);
+            road.setStroke(Color.BLACK);
+            road.setFill(Color.WHITE);
+            road.setStrokeWidth(2);
+            SuperNewHeroSimulator.roads.getChildren().add(road); 
+        }
+    }
+    
     /**
      * set length of intersecttion's side
      * @param bound 

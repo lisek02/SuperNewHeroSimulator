@@ -64,6 +64,7 @@ public class SuperNewHeroSimulator extends Application {
     public static Group paths;
     public static Group detailsLabels;
     public static Group characterLabels;
+    public static Group roads;
     public static Group releaseButton;
     public static Group planetsLabels;
     public static Group superHeroLabels;
@@ -128,6 +129,9 @@ public class SuperNewHeroSimulator extends Application {
         
         releaseButton = new Group();
         root.getChildren().add(releaseButton);
+        
+        roads = new Group();
+        root.getChildren().add(roads);
         
         for(i=0; i<numOfInters; i++) {
             inter[i].setInterRectangle(i, numOfTowns);
@@ -209,7 +213,12 @@ public class SuperNewHeroSimulator extends Application {
             }
         }, 0, releaseTheVillain);
         
-
+        for(Intersection intersection : inter) {
+            ArrayList<Intersection> interA = intersection.getNeighboursList();
+            for(Intersection neigh : interA) {
+                intersection.drawRoad(neigh);
+            }
+        }
         //showLabel(30, 30, planet[1]);
 
 
