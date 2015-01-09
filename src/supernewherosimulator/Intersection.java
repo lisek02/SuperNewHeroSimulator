@@ -42,12 +42,12 @@ public class Intersection extends Place {
         this.occupied = false;
     }
     
-    public Label showIntersectionDetails() {
+    public void showIntersectionDetails() {
         Label details = new Label();
         details.setWrapText(true);
         details.setText("(" + this.getX() + " " + this.getY() + ")\n" +
                         "permits: " + this.sem.availablePermits());
-        return details;
+        //return details;
     }
     
     /**

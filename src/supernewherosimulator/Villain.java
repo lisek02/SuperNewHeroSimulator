@@ -32,10 +32,18 @@ public class Villain extends Hero {
         super(name, id, locationX, locationY, familyTown);
         this.character.setFill(Color.GREEN);
         this.bound = 8;
+        //SuperNewHeroSimulator.villains.add(this);
     }
 
     public void run() {
         super.run();
+        Villain thisVillain = this;
+        this.getCharacterRectangle().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                thisVillain.showCharacterDetails();
+            } 
+        });
+        SuperNewHeroSimulator.villains.add(this);
         //Platform.runLater(this);
         if(this.moveToClosestTown()) {
             this.attack();
@@ -47,35 +55,11 @@ public class Villain extends Hero {
     }
 
     public void showCharacterDetails() {
-        Label characterDetails = new Label();
+        //Label characterDetails = new Label();
         int posX = (int) SuperNewHeroSimulator.scene.getWidth() - 150;
         int posY = 390;
- 
-        characterDetails.setLayoutX(posX + SuperNewHeroSimulator.shiftX);
-        characterDetails.setLayoutY(posY + SuperNewHeroSimulator.shiftY);
-        characterDetails.setWrapText(true);
-        characterDetails.setText(this.getText());
-
-        //Planet familyTown = (Planet) this.getFamilyTown();
-        characterDetails.setText("Name: " + this.getName() +
-                      //"\nFamilyTown: " + familyTown.getName() +
-                      "\nHP: " + this.HP +
-                      "\nintelligence: " + this.intelligence +
-                      "\nstrength: " + this.strength +
-                      "\nspeed: " + this.speed +
-                      "\nendurance: " + this.endurance +
-                      "\nenergy: " + this.enegry +
-                      "\nskill: " + this.skillId
-                      );
-
-        this.character.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                SuperNewHeroSimulator.characterLabels.getChildren().clear();
-                SuperNewHeroSimulator.characterLabels.getChildren().add(characterDetails);
-            }
-        });
+        
+        SuperNewHeroSimulator.showLabel(posX, posY, this);
     }
     
     public String getText() {
@@ -101,6 +85,11 @@ public class Villain extends Hero {
 
                     if((tmp.getCurrentPosition().getPowerSource().getPotential() == 0) && (tmp.getCurrentPosition().getPopulation() <= 0)) {
                         absorbing.cancel();
+                        for(Planet doDelete : SuperNewHeroSimulator.planet) {
+                            if(doDelete == tmp.getCurrentPosition()) {
+                                
+                            }
+                        }
                         //absorbingTask.cancel();
                         //Platform.runLater(this);
                         //tmp.character.setFill(Color.PINK);

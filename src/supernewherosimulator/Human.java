@@ -368,7 +368,11 @@ public abstract class Human implements Runnable {
         this.character = new Rectangle(this.getFamilyTown().getX() - this.bound, this.getFamilyTown().getY() - this.bound, 10, 10);
         this.character.setFill(Color.BLUE);
     }
-
+    
+    public Rectangle getCharacterRectangle() {
+        return this.character;
+    }
+    
     /**
      * @return the currentPosition
      */

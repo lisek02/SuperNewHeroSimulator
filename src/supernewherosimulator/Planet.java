@@ -12,6 +12,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -32,26 +34,18 @@ public class Planet extends Intersection {
         this.capital = false;
     }
     
-    public Label showIntersectionDetails() {
+    public void showIntersectionDetails() {
+        Planet thisPlanet = this;
         int posX = (int) SuperNewHeroSimulator.scene.getWidth() - 150;
         int posY = 40;
-        Label details = new Label();
-        details.setLayoutX(posX + SuperNewHeroSimulator.shiftX);
-        details.setLayoutY(posY + SuperNewHeroSimulator.shiftY);
-        details.setWrapText(true);
-        details.setText(
-                        "Name: " + this.getName() + "\n" +
-                        "Capital: " + this.isCapital() + "\n" +
-                        "Coordinates: (" + this.getX() + " " + this.getY() + ")\n" +                                
-                        "Population: " + this.getPopulation() + "\n" +
-                        "Power source: " + this.getPowerSource().getPotential() + "\n" +
-                        "Occupied: " + this.isOccupied()
-                        );
         
+        SuperNewHeroSimulator.showLabel(posX, posY, this);
+
+        //releasing super hero from capital        
         Intersection target = this;
         Button releaseSH = new Button("Launch Viper!");
         releaseSH.setLayoutX(posX + SuperNewHeroSimulator.shiftX);
-        releaseSH.setLayoutY(details.getLayoutY() + 120);
+        releaseSH.setLayoutY(155);
         SuperNewHeroSimulator.releaseButton.getChildren().add(releaseSH);
         releaseSH.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -66,7 +60,7 @@ public class Planet extends Intersection {
             }
         });            
         super.showIntersectionDetails();
-        return details;
+        //return details;
     }
     
     public void releaseSuperHero() {

@@ -5,7 +5,14 @@
  */
 package supernewherosimulator;
 
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -19,14 +26,49 @@ public class SuperHero extends Hero {
         super(name, id, locationX, locationY, familyTown);
         this.bound = 10;
     }
+
+    public void showCharacterDetails() {
+        //Label characterDetails = new Label();
+        int posX = (int) SuperNewHeroSimulator.scene.getWidth() - 150;
+        int posY = 570;
+        
+        SuperNewHeroSimulator.showLabel(posX, posY, this);
+    }
     
     public void run() {
         super.run();
         Group superHero = new Group();
         superHero.getChildren().add(this.character);
         SuperNewHeroSimulator.characters.getChildren().add(superHero);
+        this.checkCollisionWithVillain(SuperNewHeroSimulator.villains);
     }
     
+    public void checkCollisionWithVillain(ArrayList<Villain> second) {
+        SuperHero thisSH = this;
+        ObservableBooleanValue colliding;
+        for(Hero hero : second) {
+            colliding = Bindings.createBooleanBinding(new Callable<Boolean>() {
+
+                @Override
+                public Boolean call() throws Exception {
+                    return thisSH.getCharacterRectangle().getBoundsInParent().intersects(hero.getCharacterRectangle().getBoundsInParent());
+                }
+            }, thisSH.getCharacterRectangle().boundsInParentProperty(), hero.getCharacterRectangle().boundsInParentProperty());
+
+            colliding.addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if(newValue) {
+                        thisSH.attack(hero);
+                    } else {
+                        //
+                    }
+                }
+            });
+        }
+        //return colliding.get();
+    }   
+ 
     public void setCharacterRectangle() {
         this.character = new Rectangle(this.getFamilyTown().getX(), this.getFamilyTown().getY(), 20, 20);
         this.character.setFill(Color.OLIVEDRAB);

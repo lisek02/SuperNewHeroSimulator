@@ -6,9 +6,11 @@
 package supernewherosimulator;
 
 import static java.lang.Math.sqrt;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.EventListener;
@@ -30,6 +32,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -53,6 +57,7 @@ public class SuperNewHeroSimulator extends Application {
     int i;
     public static Intersection[] inter = new Intersection[numOfInters];
     public static Planet[] planet = new Planet[numOfTowns];
+    public static ArrayList<Villain> villains = new ArrayList<>();
     
     public static Group root;    
     public static Group characters;
@@ -60,10 +65,12 @@ public class SuperNewHeroSimulator extends Application {
     public static Group detailsLabels;
     public static Group characterLabels;
     public static Group releaseButton;
+    public static Group planetsLabels;
+    public static Group superHeroLabels;
     public static Scene scene;
     
-    public static int shiftX = -20;
-    public static int shiftY = 0;
+    public static int shiftX = -40;
+    public static int shiftY = -10;
     
     public static int maxNumOfCivil = 1000;
     //minimal and maximal number of civilians in a town
@@ -116,7 +123,7 @@ public class SuperNewHeroSimulator extends Application {
         Group planets = new Group();
         Node[] planetNode = new Node[numOfInters];
 
-        Group planetsLabels = new Group();
+        planetsLabels = new Group();
         planets.getChildren().add(planetsLabels);
         
         releaseButton = new Group();
@@ -136,22 +143,15 @@ public class SuperNewHeroSimulator extends Application {
                             thisInter = inter[i];
                         }
                     }
-                    planetsLabels.getChildren().clear();
+                    //planetsLabels.getChildren().clear();
                     releaseButton.getChildren().clear();
-                    planetsLabels.getChildren().add(thisInter.showIntersectionDetails());
+                    //planetsLabels.getChildren().add(thisInter.showIntersectionDetails());
                     thisInter.showIntersectionDetails();
                     thisInter.print();           
                 }            
-            });
-            
-//            planetNode[i].setOnMouseExited(new EventHandler<MouseEvent>() {
-//                public void handle(MouseEvent event) {
-//                    planetsLabels.getChildren().clear();
-//                }
-//            });
-            
-            
+            });        
         }
+             
         root.getChildren().add(planets);
      
         //generating a character group
@@ -160,6 +160,9 @@ public class SuperNewHeroSimulator extends Application {
         
         characterLabels = new Group();
         characters.getChildren().add(characterLabels);
+        
+        superHeroLabels = new Group();
+        characters.getChildren().add(superHeroLabels);
         
         //seting up a path
         paths = new Group();
@@ -205,8 +208,8 @@ public class SuperNewHeroSimulator extends Application {
             }
         }, 0, releaseTheVillain);
         
-       
-        
+
+        //showLabel(30, 30, planet[1]);
 
 
         
@@ -263,7 +266,73 @@ public class SuperNewHeroSimulator extends Application {
 //        }
 //    }
 //    
-    
+    public static void showLabel(int x, int y, Object object) {
+        Task dynamicTimeTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                while (true) {
+                    if(object.getClass() == Planet.class) {
+                        Planet toUpdate = (Planet) object;
+                        updateMessage("Name: " + toUpdate.getName() + "\n" +
+                                    "Capital: " + toUpdate.isCapital() + "\n" +
+                                    "Coordinates: (" + toUpdate.getX() + " " + toUpdate.getY() + ")\n" +                                
+                                    "Population: " + toUpdate.getPopulation() + "\n" +
+                                    "Power source: " + toUpdate.getPowerSource().getPotential() + "\n" +
+                                    "Occupied: " + toUpdate.isOccupied());
+                    } else if (object.getClass() == Villain.class) {
+                        Villain toUpdate = (Villain) object;
+                        updateMessage("Name: " + toUpdate.getName() +
+                                        "\nId: " + toUpdate.toString() +
+                                        //"\nFamilyTown: " + familyTown.getName() +
+                                        "\nHP: " + toUpdate.HP +
+                                        "\nintelligence: " + toUpdate.intelligence +
+                                        "\nstrength: " + toUpdate.strength +
+                                        "\nspeed: " + toUpdate.speed +
+                                        "\nendurance: " + toUpdate.endurance +
+                                        "\nenergy: " + toUpdate.enegry +
+                                        "\nskill: " + toUpdate.skillId);
+                    } else if (object.getClass() == SuperHero.class) {
+                        SuperHero toUpdate = (SuperHero) object;
+                        updateMessage("Name: " + toUpdate.getName() +
+                                        "\nId: " + toUpdate.toString() +
+                                        //"\nFamilyTown: " + familyTown.getName() +
+                                        "\nHP: " + toUpdate.HP +
+                                        "\nintelligence: " + toUpdate.intelligence +
+                                        "\nstrength: " + toUpdate.strength +
+                                        "\nspeed: " + toUpdate.speed +
+                                        "\nendurance: " + toUpdate.endurance +
+                                        "\nenergy: " + toUpdate.enegry +
+                                        "\nskill: " + toUpdate.skillId);
+                    }
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException ex) {
+                        break;
+                    }
+                }
+                return null;
+            }
+        };
+        Label dynamicTimeDisplayLabel2 = new Label();
+        dynamicTimeDisplayLabel2.textProperty().bind(dynamicTimeTask.messageProperty());
+        dynamicTimeDisplayLabel2.setLayoutX(x + shiftX);
+        dynamicTimeDisplayLabel2.setLayoutY(y + shiftY);
+        if(object.getClass() == Planet.class) {
+            planetsLabels.getChildren().clear();
+            planetsLabels.getChildren().add(dynamicTimeDisplayLabel2);
+        } else if(object.getClass() == Villain.class) {
+            characterLabels.getChildren().clear();
+            characterLabels.getChildren().add(dynamicTimeDisplayLabel2);
+        } else if (object.getClass() == SuperHero.class) {
+            superHeroLabels.getChildren().clear();
+            superHeroLabels.getChildren().add(dynamicTimeDisplayLabel2); 
+        }
+        Thread t2 = new Thread(dynamicTimeTask);
+        t2.setName("Tesk Time Updater");
+        t2.setDaemon(true);
+        t2.start();   
+    }
     
     private void generatePlanet(Planet[] planet) {    
 

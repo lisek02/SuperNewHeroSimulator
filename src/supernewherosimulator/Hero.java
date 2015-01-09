@@ -58,10 +58,37 @@ public abstract class Hero extends Human {
     }
     
     /**
+     * @param target
      *  @attack other hero
      */
-    public void attack() {
+    public void attack(Hero target) {
         
+        System.out.println("I'm attacking!");
+        if(this.speed > target.speed) {
+            while(this.HP > 0 && target.HP > 0) {
+                this.punch(target);
+                target.punch(this);
+            }
+            //find looser
+        } else {
+            while(this.HP > 0 && target.HP > 0) {
+                target.punch(this);
+                this.punch(target);
+            }
+            //find looser
+        }
+        //kill looser        
+    }
+    
+    public void punch(Hero target) {
+        if(this.HP > 0) {
+            int ability = (int) this.findHighestAbility();
+            target.HP -= ability * this.endurance;
+        }
+    }
+    
+    public double findHighestAbility() {
+        return Math.max(this.intelligence, Math.max(this.endurance, this.enegry));
     }
     
     /**
