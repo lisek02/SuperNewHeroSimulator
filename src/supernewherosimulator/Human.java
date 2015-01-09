@@ -59,11 +59,11 @@ public abstract class Human implements Runnable {
         this.setLocationX(locationX);
         this.setLocationY(locationY);
         this.familyTown = familyTown;
-        this.setCharacterRectangle();
         //Platform.runLater(this);
     }
     
     public void run() {
+        this.setCharacterRectangle();
         this.showCharacterDetails();
     }
     

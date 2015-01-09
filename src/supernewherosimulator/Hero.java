@@ -28,7 +28,7 @@ public abstract class Hero extends Human {
         super(name, id, locationX, locationY, familyTown);
         int min = 1;
         int max = 5;
-        this.HP = SuperNewHeroSimulator.randInt(min, max);
+        this.HP = SuperNewHeroSimulator.randInt(100, 200);
         this.intelligence = SuperNewHeroSimulator.randInt(min, max);
         this.strength = SuperNewHeroSimulator.randInt(min, max);
         this.speed = SuperNewHeroSimulator.randInt(min, max);

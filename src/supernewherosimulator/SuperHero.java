@@ -22,9 +22,12 @@ import javafx.scene.shape.Rectangle;
  */
 public class SuperHero extends Hero {
     
-    public SuperHero(String name, int id, int locationX, int locationY, Intersection familyTown) {
+    private Intersection target;
+    
+    public SuperHero(String name, int id, int locationX, int locationY, Intersection familyTown, Intersection target) {
         super(name, id, locationX, locationY, familyTown);
         this.bound = 10;
+        this.target = target;
     }
 
     public void showCharacterDetails() {
@@ -36,10 +39,14 @@ public class SuperHero extends Hero {
     }
     
     public void run() {
+        Planet capital = SuperNewHeroSimulator.planet[5];
+        
         super.run();
         Group superHero = new Group();
         superHero.getChildren().add(this.character);
         SuperNewHeroSimulator.characters.getChildren().add(superHero);
+        capital.releaseSuperHero();
+        this.moveBetween(capital, this.target);
         this.checkCollisionWithVillain(SuperNewHeroSimulator.villains);
     }
     

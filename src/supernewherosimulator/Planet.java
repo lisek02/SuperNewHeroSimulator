@@ -52,11 +52,9 @@ public class Planet extends Intersection {
             @Override
             public void handle(ActionEvent event) {
                 Planet capital = SuperNewHeroSimulator.planet[5];
-                SuperHero sHero = new SuperHero("Cpt. Adama", SuperNewHeroSimulator.randInt(1, 100), capital.getX(), capital.getY(), capital);
+                SuperHero sHero = new SuperHero("Cpt. Adama", SuperNewHeroSimulator.randInt(1, 100), capital.getX(), capital.getY(), capital, target);
                 Thread threadS = new Thread(sHero);
                 Platform.runLater(threadS);
-                capital.releaseSuperHero();
-                sHero.moveBetween(capital, target);
             }
         });            
         super.showIntersectionDetails();

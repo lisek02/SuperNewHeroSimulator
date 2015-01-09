@@ -177,7 +177,7 @@ public class SuperNewHeroSimulator extends Application {
 
         
         int releaseTheCivil = 2000;
-        int releaseTheVillain = 20000;
+        int releaseTheVillain = 2000;
         
         Timer timerCivil = new Timer();
         timerCivil.scheduleAtFixedRate(new TimerTask() {
@@ -203,6 +203,7 @@ public class SuperNewHeroSimulator extends Application {
                         placeToSpawn.randomEdge();
                         Villain vill = new Villain("villain" + randInt(1, 1000), randInt(1, 1000), placeToSpawn.getX(), placeToSpawn.getY(), new Intersection(placeToSpawn.getX(), placeToSpawn.getY()));
                         Thread threadV = new Thread(vill);
+                        threadV.setName("Villain");
                         Platform.runLater(threadV);
                         //threadV.start();
             }

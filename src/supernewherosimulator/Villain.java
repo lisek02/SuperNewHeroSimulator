@@ -30,20 +30,21 @@ public class Villain extends Hero {
 
     public Villain(String name, int id, int locationX, int locationY, Intersection familyTown) {
         super(name, id, locationX, locationY, familyTown);
-        this.character.setFill(Color.GREEN);
         this.bound = 8;
         //SuperNewHeroSimulator.villains.add(this);
     }
 
     public void run() {
         super.run();
+        this.character.setFill(Color.GREEN);
+        SuperNewHeroSimulator.villains.add(this);
         Villain thisVillain = this;
         this.getCharacterRectangle().setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 thisVillain.showCharacterDetails();
             } 
         });
-        SuperNewHeroSimulator.villains.add(this);
+        
         //Platform.runLater(this);
         if(this.moveToClosestTown()) {
             this.attack();
